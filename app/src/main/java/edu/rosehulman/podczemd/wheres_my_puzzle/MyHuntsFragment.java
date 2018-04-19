@@ -10,14 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MyHuntsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MyHuntsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MyHuntsFragment extends Fragment {
 
     private ViewChanger viewChanger;
