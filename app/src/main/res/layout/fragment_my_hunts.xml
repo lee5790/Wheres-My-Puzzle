@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.MyHuntActivity"
-    tools:showIn="@layout/activity_my_hunt">
+    tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity"
+    tools:showIn="@layout/activity_main">
 
     <TextView
         android:id="@+id/textView"
