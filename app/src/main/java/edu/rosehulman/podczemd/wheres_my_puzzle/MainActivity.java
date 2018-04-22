@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements ViewChanger {
 
         if(savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.fragment_container, new MyHuntsFragment());
+            ft.add(R.id.fragment_container, MyHuntsFragment.newInstance(user));
             ft.commit();
         }
     }
@@ -55,5 +55,11 @@ public class MainActivity extends AppCompatActivity implements ViewChanger {
         ft.replace(R.id.fragment_container, fragment);
         ft.addToBackStack(transactionName);
         ft.commit();
+    }
+
+    @Override
+    public void changeViewAndBack(Fragment fragment, String transactionName) {
+        getSupportFragmentManager().popBackStackImmediate();
+        this.changeView(fragment, transactionName);
     }
 }

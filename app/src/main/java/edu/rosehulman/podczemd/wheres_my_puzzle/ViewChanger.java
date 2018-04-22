@@ -8,4 +8,5 @@ import android.support.v4.app.Fragment;
 
 public interface ViewChanger {
     public void changeView(Fragment fragment, String transactionName);
+    public void changeViewAndBack(Fragment fragment, String transactionName);
 }

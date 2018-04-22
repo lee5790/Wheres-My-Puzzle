@@ -10,9 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_USER;
+
 public class MyHuntsFragment extends Fragment {
 
+    private User user;
     private ViewChanger viewChanger;
+
     private Button createButton;
 
     public MyHuntsFragment() {
@@ -20,8 +24,11 @@ public class MyHuntsFragment extends Fragment {
     }
 
 
-    public static MyHuntsFragment newInstance() {
+    public static MyHuntsFragment newInstance(User user) {
         MyHuntsFragment fragment = new MyHuntsFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_USER, user);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -29,6 +36,7 @@ public class MyHuntsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            user = getArguments().getParcelable(ARG_USER);
         }
     }
 
@@ -41,7 +49,7 @@ public class MyHuntsFragment extends Fragment {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewChanger.changeView(new CreateHuntFragment(), "Create new hunt");
+                viewChanger.changeView(CreateHuntFragment.newInstance(user), "Create new hunt");
             }
         });
 
