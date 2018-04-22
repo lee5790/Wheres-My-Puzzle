@@ -4,27 +4,39 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
+import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_HINT;
+import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_HUNT;
 import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_USER;
 
 
 public class CreateHintFragment extends Fragment {
+    private Button cancelButton;
+    private Button deleteButton;
+    private Button finishButton;
     private User user;
+    private Hunt hunt;
+    private Hint hint;
     private ViewChanger viewChanger;
+
 
 
     public CreateHintFragment() {
         // Required empty public constructor
     }
 
-    public static CreateHintFragment newInstance(User user) {
+    public static CreateHintFragment newInstance(User user, Hunt hunt, Hint hint) {
         CreateHintFragment fragment = new CreateHintFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_USER, user);
+        args.putParcelable(ARG_HUNT, hunt);
+        args.putParcelable(ARG_HINT,hint);
         fragment.setArguments(args);
         return fragment;
     }
@@ -35,6 +47,7 @@ public class CreateHintFragment extends Fragment {
         if (getArguments() != null) {
             user = getArguments().getParcelable(ARG_USER);
         }
+
     }
 
     @Override
@@ -44,6 +57,30 @@ public class CreateHintFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_create_hint, container, false);
         EditText hintDescription = view.findViewById(R.id.hintDetailEditText);
         hintDescription.setText(user.getPassword());
+        cancelButton = view.findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewChanger.changeViewAndBack(CreateHuntFragment.newInstance(user,hunt), "Create Hunts");
+            }
+        });
+
+        deleteButton = view.findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO delete from created hunts
+                viewChanger.changeViewAndBack(CreateHuntFragment.newInstance(user,hunt), "Create Hunts");
+            }
+        });
+
+        finishButton = view.findViewById(R.id.finishButton);
+        finishButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                finalizeHint();
+            }
+        });
         return view;
     }
 
@@ -57,6 +94,11 @@ public class CreateHintFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement ViewChanger");
         }
+    }
+
+    private void finalizeHint(){
+        //TODO Add code to change hint values
+        viewChanger.changeViewAndBack(CreateHuntFragment.newInstance(user,hunt), "Create Hunts");
     }
 
     @Override

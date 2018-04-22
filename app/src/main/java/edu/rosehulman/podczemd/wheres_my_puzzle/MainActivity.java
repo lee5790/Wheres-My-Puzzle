@@ -10,7 +10,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements ViewChanger {
     public static final String ARG_USER = "user";
-
+    public static final String ARG_HUNT = "hunt";
+    public static final String ARG_HINT = "hint";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

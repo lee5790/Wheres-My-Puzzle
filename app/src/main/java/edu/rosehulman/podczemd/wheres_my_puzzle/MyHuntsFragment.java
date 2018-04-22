@@ -49,7 +49,7 @@ public class MyHuntsFragment extends Fragment {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewChanger.changeView(CreateHuntFragment.newInstance(user), "Create new hunt");
+                viewChanger.changeView(CreateHuntFragment.newInstance(user,new Hunt(user.getUsername())), "Create new hunt");
             }
         });
 
