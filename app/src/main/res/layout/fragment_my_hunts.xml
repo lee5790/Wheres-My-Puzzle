@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="44dp"
-        android:text="My Hunts"
+        android:text="@string/my_hunts"
         android:textSize="32sp"
         android:textStyle="bold" />
 
@@ -35,7 +35,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="46dp"
-        android:text="Create a Hunt" />
+        android:text="@string/create_a_hunt" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/hintRecyclerView"
