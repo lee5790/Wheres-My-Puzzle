@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements ViewChanger {
+    public static final String ARG_USER = "user";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +17,8 @@ public class MainActivity extends AppCompatActivity implements ViewChanger {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        User user = new User("Creator", "12345");
 
         if(savedInstanceState == null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

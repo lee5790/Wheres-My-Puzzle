@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_USER;
+
 
 public class CreateHuntFragment extends Fragment {
     public CreateHuntFragment() {
@@ -15,6 +17,9 @@ public class CreateHuntFragment extends Fragment {
     }
     public static CreateHuntFragment newInstance() {
         CreateHuntFragment fragment = new CreateHuntFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_USER, doc);
+        fragment.setArguments(args);
         return fragment;
     }
 

@@ -43,6 +43,7 @@
         android:layout_alignBottom="@+id/textView2"
         android:layout_centerHorizontal="true"
         android:ems="10"
+        android:hint="Title"
         android:inputType="textPersonName"
         android:text="Title" />
 
@@ -63,8 +64,8 @@
         android:layout_below="@+id/textView3"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:inputType="textMultiLine"
-        android:text="Description" />
+        android:hint="Description"
+        android:inputType="textMultiLine" />
 
     <Button
         android:id="@+id/addHuntButton"
@@ -105,8 +106,8 @@
         android:layout_alignStart="@+id/textView4"
         android:layout_below="@+id/textView4"
         android:ems="10"
-        android:inputType="textMultiLine"
-        android:text="Finish Message" />
+        android:hint="Finish Message"
+        android:inputType="textMultiLine" />
 
     <Button
         android:id="@+id/finishButton"
