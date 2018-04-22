@@ -7,7 +7,7 @@
     <!-- TODO: Update blank fragment layout -->
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -16,12 +16,12 @@
         android:text="Cancel" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/button"
-        android:layout_toRightOf="@+id/button"
+        android:layout_toEndOf="@+id/cancelButton"
+        android:layout_toRightOf="@+id/cancelButton"
         android:text="@string/delete" />
 
     <TextView
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/hintDetailEditText"
         android:layout_alignStart="@+id/hintDetailEditText"
-        android:layout_below="@+id/button"
+        android:layout_below="@+id/cancelButton"
         android:layout_marginTop="18dp"
         android:text="@string/hint"
         android:textSize="18sp" />
