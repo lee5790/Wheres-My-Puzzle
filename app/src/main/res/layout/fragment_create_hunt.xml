@@ -1,121 +1,129 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.CreateHuntFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <Button
-        android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/cancel" />
-
-    <Button
-        android:id="@+id/deleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/cancelButton"
-        android:layout_toRightOf="@+id/cancelButton"
-        android:text="@string/delete" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_alignStart="@+id/textView3"
-        android:layout_below="@+id/cancelButton"
-        android:layout_marginTop="13dp"
-        android:text="@string/title"
-        android:textSize="18sp" />
-
-    <EditText
-        android:id="@+id/titleEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView2"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:hint="@string/title_hint"
-        android:inputType="textPersonName"
-         />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/descriptionEditText"
-        android:layout_alignStart="@+id/descriptionEditText"
-        android:layout_below="@+id/titleEditText"
-        android:text="@string/description"
-        android:textSize="18sp" />
-
-    <EditText
-        android:id="@+id/descriptionEditText"
-        android:layout_width="350sp"
-        android:layout_height="60sp"
-        android:layout_below="@+id/textView3"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:hint="@string/description_hint"
-        android:inputType="textMultiLine" />
-
-    <Button
-        android:id="@+id/addHuntButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="139dp"
-        android:text="@string/add_hunt" />
-
-    <android.support.v7.widget.RecyclerView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/addHuntButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/descriptionEditText"
-        android:id="@+id/recyclerView" />
+        tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.CreateHuntFragment">
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/descriptionEditText"
-        android:layout_alignStart="@+id/descriptionEditText"
-        android:layout_below="@+id/recyclerView"
-        android:layout_marginTop="54dp"
-        android:text="@string/finish_message"
-        android:textSize="18sp"
-        />
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/cancel" />
 
-    <EditText
-        android:id="@+id/finishMessageEditText"
-        android:layout_width="350sp"
-        android:layout_height="60sp"
-        android:layout_alignLeft="@+id/textView4"
-        android:layout_alignStart="@+id/textView4"
-        android:layout_below="@+id/textView4"
-        android:ems="10"
-        android:hint="@string/finish_message_hint"
-        android:inputType="textMultiLine" />
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/cancelButton"
+            android:layout_toRightOf="@+id/cancelButton"
+            android:text="@string/delete" />
 
-    <Button
-        android:id="@+id/finishButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/finishMessageEditText"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/finishMessageEditText"
-        android:text="@string/finish" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/cancelButton"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/title"
+            android:textSize="18sp" />
 
-</RelativeLayout>
+        <EditText
+            android:id="@+id/titleEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cancelButton"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/textView2"
+            android:layout_toRightOf="@+id/textView2"
+            android:ems="10"
+            android:hint="@string/title_hint"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView2"
+            android:layout_alignStart="@+id/textView2"
+            android:layout_below="@+id/titleEditText"
+            android:layout_marginTop="10dp"
+            android:text="@string/description"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/descriptionEditText"
+            android:layout_width="350sp"
+            android:layout_height="60sp"
+            android:layout_alignLeft="@+id/textView3"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@+id/textView3"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="@string/description_hint"
+            android:inputType="textMultiLine" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/descriptionEditText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp" />
+
+        <Button
+            android:id="@+id/addHuntButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/recyclerView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/add_hint" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/descriptionEditText"
+            android:layout_alignStart="@+id/descriptionEditText"
+            android:layout_below="@+id/addHuntButton"
+            android:layout_marginTop="10dp"
+            android:text="@string/finish_message"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/finishMessageEditText"
+            android:layout_width="350sp"
+            android:layout_height="60sp"
+            android:layout_alignLeft="@+id/textView4"
+            android:layout_alignStart="@+id/textView4"
+            android:layout_below="@+id/textView4"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="@string/finish_message_hint"
+            android:inputType="textMultiLine" />
+
+        <Button
+            android:id="@+id/finishButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/finishMessageEditText"
+            android:layout_alignRight="@+id/finishMessageEditText"
+            android:layout_below="@+id/finishMessageEditText"
+            android:layout_marginTop="10dp"
+            android:text="@string/finish" />
+
+    </RelativeLayout>
+</ScrollView>
