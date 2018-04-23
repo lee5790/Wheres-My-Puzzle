@@ -15,15 +15,11 @@ import java.util.ArrayList;
 public class HintListAdapter extends RecyclerView.Adapter<HintListAdapter.ViewHolder> {
 
     private ArrayList<Hint> hints;
-    private User user;
-    private Hunt hunt;
-    private ViewChanger viewChanger;
+    private HintListCallback callback;
 
-    public HintListAdapter(ArrayList<Hint> hints, User user, Hunt hunt, ViewChanger viewChanger) {
+    public HintListAdapter(ArrayList<Hint> hints, HintListCallback callback) {
         this.hints = hints;
-        this.user = user;
-        this.hunt = hunt;
-        this.viewChanger = viewChanger;
+        this.callback = callback;
     }
 
     @Override
@@ -36,8 +32,6 @@ public class HintListAdapter extends RecyclerView.Adapter<HintListAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Hint hint = hints.get(position);
         holder.hint = hint;
-        holder.user = user;
-        holder.hunt = hunt;
         holder.hintText.setText(hint.getHint());
     }
 
@@ -48,8 +42,6 @@ public class HintListAdapter extends RecyclerView.Adapter<HintListAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public Hint hint;
-        private User user;
-        private Hunt hunt;
         public TextView hintText;
 
         public ViewHolder(View itemView) {
@@ -58,9 +50,13 @@ public class HintListAdapter extends RecyclerView.Adapter<HintListAdapter.ViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    viewChanger.changeView(CreateHintFragment.newInstance(user, hunt, hint), "Edit hunt");
+                    callback.hintSelected(hint);
                 }
             });
         }
+    }
+
+    public interface HintListCallback {
+        public void hintSelected(Hint hint);
     }
 }

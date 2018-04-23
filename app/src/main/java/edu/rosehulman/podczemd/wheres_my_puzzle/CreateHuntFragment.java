@@ -15,7 +15,7 @@ import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_HUNT;
 import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_USER;
 
 
-public class CreateHuntFragment extends Fragment {
+public class CreateHuntFragment extends Fragment implements HintListAdapter.HintListCallback{
 
     private User user;
     private ViewChanger viewChanger;
@@ -82,9 +82,7 @@ public class CreateHuntFragment extends Fragment {
         addHintButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hunt.setTitle(titleEditText.getText().toString());
-                hunt.setDescription(descriptionEditText.getText().toString());
-                hunt.setFinalMessage(finishMessageEditText.getText().toString());
+                saveFields();
                 viewChanger.changeView(CreateHintFragment.newInstance(user,hunt,new Hint()), "Create new Hint");
             }
         });
@@ -96,9 +94,7 @@ public class CreateHuntFragment extends Fragment {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hunt.setTitle(titleEditText.getText().toString());
-                hunt.setDescription(descriptionEditText.getText().toString());
-                hunt.setFinalMessage(finishMessageEditText.getText().toString());
+                saveFields();
                 if(!user.getCreatedHunts().contains(hunt)) {
                     user.addCreatedHunts(hunt);
                 }
@@ -108,7 +104,7 @@ public class CreateHuntFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.hintRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new HintListAdapter(hunt.getHints(), user, hunt, viewChanger));
+        recyclerView.setAdapter(new HintListAdapter(hunt.getHints(), this));
 
         return view;
     }
@@ -128,5 +124,17 @@ public class CreateHuntFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    private void saveFields() {
+        hunt.setTitle(titleEditText.getText().toString());
+        hunt.setDescription(descriptionEditText.getText().toString());
+        hunt.setFinalMessage(finishMessageEditText.getText().toString());
+    }
+
+    @Override
+    public void hintSelected(Hint hint) {
+        saveFields();
+        viewChanger.changeView(CreateHintFragment.newInstance(user, hunt, hint), "Edit hint");
     }
 }

@@ -15,13 +15,11 @@ import java.util.ArrayList;
 public class MyHuntListAdapter extends RecyclerView.Adapter<MyHuntListAdapter.ViewHolder> {
 
     private ArrayList<Hunt> hunts;
-    private User user;
-    private ViewChanger viewChanger;
+    private HuntListCallback callback;
 
-    public MyHuntListAdapter (ArrayList<Hunt> hunts, User user, ViewChanger viewChanger) {
+    public MyHuntListAdapter (ArrayList<Hunt> hunts, HuntListCallback callback) {
         this.hunts = hunts;
-        this.user = user;
-        this.viewChanger = viewChanger;
+        this.callback = callback;
     }
 
     @Override
@@ -34,7 +32,6 @@ public class MyHuntListAdapter extends RecyclerView.Adapter<MyHuntListAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Hunt hunt = hunts.get(position);
         holder.hunt = hunt;
-        holder.user = user;
         holder.huntTitleText.setText(hunt.getTitle());
     }
 
@@ -45,7 +42,6 @@ public class MyHuntListAdapter extends RecyclerView.Adapter<MyHuntListAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public Hunt hunt;
-        private User user;
         public TextView huntTitleText;
 
         public ViewHolder(View itemView) {
@@ -54,9 +50,13 @@ public class MyHuntListAdapter extends RecyclerView.Adapter<MyHuntListAdapter.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    viewChanger.changeView(CreateHuntFragment.newInstance(user,hunt), "Edit hunt");
+                    callback.huntSelected(hunt);
                 }
             });
         }
+    }
+
+    public interface HuntListCallback {
+        public void huntSelected(Hunt hunt);
     }
 }

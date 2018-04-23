@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_USER;
 
-public class MyHuntsFragment extends Fragment {
+public class MyHuntsFragment extends Fragment implements MyHuntListAdapter.HuntListCallback{
 
     private User user;
     private ViewChanger viewChanger;
@@ -58,7 +58,7 @@ public class MyHuntsFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.huntRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new MyHuntListAdapter(user.getCreatedHunts(), user, viewChanger));
+        recyclerView.setAdapter(new MyHuntListAdapter(user.getCreatedHunts(), this));
 
         return view;
     }
@@ -78,5 +78,10 @@ public class MyHuntsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void huntSelected(Hunt hunt) {
+        viewChanger.changeView(CreateHuntFragment.newInstance(user,hunt), "Edit hunt");
     }
 }
