@@ -1,7 +1,6 @@
 package edu.rosehulman.podczemd.wheres_my_puzzle;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,8 +22,9 @@ public class CreateHuntFragment extends Fragment {
     private Button deleteButton;
     private EditText titleEditText;
     private EditText descriptionEditText;
-    private Button addHuntButton;
+    private Button addHintButton;
     private EditText finishMessageEditText;
+    private Button finishButton;
 
     public CreateHuntFragment() {
     }
@@ -43,6 +43,7 @@ public class CreateHuntFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             user = getArguments().getParcelable(ARG_USER);
+            hunt = getArguments().getParcelable(ARG_HUNT);
         }
     }
 
@@ -63,7 +64,7 @@ public class CreateHuntFragment extends Fragment {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO delete from created hunts
+                user.removeCreatedHunts(hunt);
                 viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user), "My Hunts");
             }
         });
@@ -71,8 +72,8 @@ public class CreateHuntFragment extends Fragment {
         titleEditText = view.findViewById(R.id.titleEditText);
         descriptionEditText = view.findViewById(R.id.descriptionEditText);
 
-        addHuntButton = view.findViewById(R.id.addHuntButton);
-        addHuntButton.setOnClickListener(new View.OnClickListener() {
+        addHintButton = view.findViewById(R.id.addHintButton);
+        addHintButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewChanger.changeView(CreateHintFragment.newInstance(user,hunt,new Hint()), "Create new Hint");
@@ -80,6 +81,20 @@ public class CreateHuntFragment extends Fragment {
         });
 
         finishMessageEditText = view.findViewById(R.id.finishMessageEditText);
+
+        finishButton = view.findViewById(R.id.finishButton);
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hunt.setTitle(titleEditText.getText().toString());
+                hunt.setDescription(descriptionEditText.getText().toString());
+                hunt.setFinalMessage(finishMessageEditText.getText().toString());
+                if(!user.getCreatedHunts().contains(hunt)) {
+                    user.addCreatedHunts(hunt);
+                }
+                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user), "My Hunts");
+            }
+        });
         return view;
     }
 

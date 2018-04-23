@@ -84,7 +84,7 @@
             android:layout_marginTop="25dp" />
 
         <Button
-            android:id="@+id/addHuntButton"
+            android:id="@+id/addHintButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/recyclerView"
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/descriptionEditText"
             android:layout_alignStart="@+id/descriptionEditText"
-            android:layout_below="@+id/addHuntButton"
+            android:layout_below="@+id/addHintButton"
             android:layout_marginTop="10dp"
             android:text="@string/finish_message"
             android:textSize="18sp" />

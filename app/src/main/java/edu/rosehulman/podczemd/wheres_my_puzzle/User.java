@@ -73,6 +73,10 @@ public class User implements Parcelable{
         this.createdHunts.add(createdHunt);
     }
 
+    public void removeCreatedHunts(Hunt hunt) {
+        this.createdHunts.remove(hunt);
+    }
+
     @Override
     public int describeContents() {
         return 0;
