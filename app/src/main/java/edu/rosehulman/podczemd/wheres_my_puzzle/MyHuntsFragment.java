@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ public class MyHuntsFragment extends Fragment {
     private User user;
     private ViewChanger viewChanger;
 
+    private RecyclerView recyclerView;
     private Button createButton;
 
     public MyHuntsFragment() {
@@ -52,6 +55,10 @@ public class MyHuntsFragment extends Fragment {
                 viewChanger.changeView(CreateHuntFragment.newInstance(user,new Hunt(user.getUsername())), "Create new hunt");
             }
         });
+
+        recyclerView = view.findViewById(R.id.hintRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(new MyHuntListAdapter(user.getCreatedHunts(), user, viewChanger));
 
         return view;
     }
