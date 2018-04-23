@@ -3,6 +3,8 @@ package edu.rosehulman.podczemd.wheres_my_puzzle;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ public class CreateHuntFragment extends Fragment {
     private Button addHintButton;
     private EditText finishMessageEditText;
     private Button finishButton;
+    private RecyclerView recyclerView;
 
     public CreateHuntFragment() {
     }
@@ -79,6 +82,9 @@ public class CreateHuntFragment extends Fragment {
         addHintButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hunt.setTitle(titleEditText.getText().toString());
+                hunt.setDescription(descriptionEditText.getText().toString());
+                hunt.setFinalMessage(finishMessageEditText.getText().toString());
                 viewChanger.changeView(CreateHintFragment.newInstance(user,hunt,new Hint()), "Create new Hint");
             }
         });
@@ -99,6 +105,11 @@ public class CreateHuntFragment extends Fragment {
                 viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user), "My Hunts");
             }
         });
+
+        recyclerView = view.findViewById(R.id.hintRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(new HintListAdapter(hunt.getHints(), user, hunt, viewChanger));
+
         return view;
     }
 

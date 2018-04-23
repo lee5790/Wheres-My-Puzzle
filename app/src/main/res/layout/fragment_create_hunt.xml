@@ -76,7 +76,7 @@
             android:inputType="textMultiLine" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/hintRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/descriptionEditText"
@@ -87,7 +87,7 @@
             android:id="@+id/addHintButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/recyclerView"
+            android:layout_below="@+id/hintRecyclerView"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:text="@string/add_hint" />

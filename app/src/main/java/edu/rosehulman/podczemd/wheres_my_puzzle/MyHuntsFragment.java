@@ -56,7 +56,7 @@ public class MyHuntsFragment extends Fragment {
             }
         });
 
-        recyclerView = view.findViewById(R.id.hintRecyclerView);
+        recyclerView = view.findViewById(R.id.huntRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(new MyHuntListAdapter(user.getCreatedHunts(), user, viewChanger));
 
