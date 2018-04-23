@@ -113,8 +113,8 @@ public class CreateHintFragment extends Fragment {
 
     private void finalizeHint(View view){
         this.hint.setHint(String.valueOf(hintText.getText()));
-        this.hint.setLatitude(Integer.parseInt(latitudeText.getText().toString()));
-        this.hint.setLongitude(Integer.parseInt(longitudeText.getText().toString()));
+        this.hint.setLatitude(Double.parseDouble(latitudeText.getText().toString()));
+        this.hint.setLongitude(Double.parseDouble(longitudeText.getText().toString()));
         this.hint.setFinishMessage(String.valueOf(finishText.getText()));
         if (!hunt.getHints().contains(hint)) {
             hunt.addHint(hint);
