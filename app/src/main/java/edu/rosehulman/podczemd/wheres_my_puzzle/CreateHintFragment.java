@@ -73,7 +73,7 @@ public class CreateHintFragment extends Fragment {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO delete from created hunts
+                hunt.removeHint(hint);
                 viewChanger.changeViewAndBack(CreateHuntFragment.newInstance(user,hunt), "Create Hunts");
             }
         });
@@ -86,9 +86,16 @@ public class CreateHintFragment extends Fragment {
             }
         });
         this.hintText = view.findViewById(R.id.hintDetailEditText);
+        this.hintText.setText(hint.getHint());
+
         this.latitudeText = view.findViewById(R.id.latitudeEditText);
+        this.latitudeText.setText("" + hint.getLatitude());
+
         this.longitudeText = view.findViewById(R.id.longitudeEditText);
+        this.longitudeText.setText("" + hint.getLongitude());
+
         this.finishText = view.findViewById(R.id.hintFinishMessageEditText);
+        this.finishText.setText(hint.getFinishMessage());
         return view;
     }
 
@@ -105,11 +112,13 @@ public class CreateHintFragment extends Fragment {
     }
 
     private void finalizeHint(View view){
-        //TODO Add code to change hint values
         this.hint.setHint(String.valueOf(hintText.getText()));
         this.hint.setLatitude(Integer.parseInt(latitudeText.getText().toString()));
         this.hint.setLongitude(Integer.parseInt(longitudeText.getText().toString()));
         this.hint.setFinishMessage(String.valueOf(finishText.getText()));
+        if (!hunt.getHints().contains(hint)) {
+            hunt.addHint(hint);
+        }
         viewChanger.changeViewAndBack(CreateHuntFragment.newInstance(user,hunt), "Create Hunts");
     }
 

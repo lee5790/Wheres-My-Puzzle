@@ -73,6 +73,10 @@ public class Hunt implements Parcelable{
         this.hints.add(hint);
     }
 
+    public void removeHint(Hint hint) {
+        this.hints.remove(hint);
+    }
+
     public void setHint(int index, Hint hint){
         this.hints.set(index,hint);
     }
