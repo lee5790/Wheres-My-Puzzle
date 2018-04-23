@@ -70,7 +70,10 @@ public class CreateHuntFragment extends Fragment {
         });
 
         titleEditText = view.findViewById(R.id.titleEditText);
+        titleEditText.setText(hunt.getTitle());
+
         descriptionEditText = view.findViewById(R.id.descriptionEditText);
+        descriptionEditText.setText(hunt.getDescription());
 
         addHintButton = view.findViewById(R.id.addHintButton);
         addHintButton.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +84,7 @@ public class CreateHuntFragment extends Fragment {
         });
 
         finishMessageEditText = view.findViewById(R.id.finishMessageEditText);
+        finishMessageEditText.setText(hunt.getFinalMessage());
 
         finishButton = view.findViewById(R.id.finishButton);
         finishButton.setOnClickListener(new View.OnClickListener() {
