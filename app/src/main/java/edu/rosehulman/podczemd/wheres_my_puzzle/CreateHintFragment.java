@@ -24,7 +24,10 @@ public class CreateHintFragment extends Fragment {
     private Hunt hunt;
     private Hint hint;
     private ViewChanger viewChanger;
-
+    EditText hintText;
+    EditText latitudeText;
+    EditText longitudeText;
+    EditText finishText;
 
 
     public CreateHintFragment() {
@@ -46,8 +49,9 @@ public class CreateHintFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             user = getArguments().getParcelable(ARG_USER);
+            hunt = getArguments().getParcelable(ARG_HUNT);
+            hint = getArguments().getParcelable(ARG_HINT);
         }
-
     }
 
     @Override
@@ -78,9 +82,13 @@ public class CreateHintFragment extends Fragment {
         finishButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                finalizeHint();
+                finalizeHint(v);
             }
         });
+        this.hintText = view.findViewById(R.id.hintDetailEditText);
+        this.latitudeText = view.findViewById(R.id.latitudeEditText);
+        this.longitudeText = view.findViewById(R.id.longitudeEditText);
+        this.finishText = view.findViewById(R.id.hintFinishMessageEditText);
         return view;
     }
 
@@ -96,8 +104,12 @@ public class CreateHintFragment extends Fragment {
         }
     }
 
-    private void finalizeHint(){
+    private void finalizeHint(View view){
         //TODO Add code to change hint values
+        this.hint.setHint(String.valueOf(hintText.getText()));
+        this.hint.setLatitude(Integer.parseInt(latitudeText.getText().toString()));
+        this.hint.setLongitude(Integer.parseInt(longitudeText.getText().toString()));
+        this.hint.setFinishMessage(String.valueOf(finishText.getText()));
         viewChanger.changeViewAndBack(CreateHuntFragment.newInstance(user,hunt), "Create Hunts");
     }
 
