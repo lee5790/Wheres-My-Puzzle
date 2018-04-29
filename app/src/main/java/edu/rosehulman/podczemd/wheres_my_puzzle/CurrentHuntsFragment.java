@@ -1,26 +1,39 @@
 package edu.rosehulman.podczemd.wheres_my_puzzle;
 
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
+import static android.content.Context.LOCATION_SERVICE;
 import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_USER;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CurrentHuntsFragment extends Fragment {
+public class CurrentHuntsFragment extends Fragment implements LocationObserver{
 
     private User user;
     private ViewChanger viewChanger;
+    private LocationSource locationSource;
 
     private Button myHuntsButton;
+    private TextView latTextView;
+    private TextView longTextView;
 
 
     public CurrentHuntsFragment() {
@@ -53,6 +66,20 @@ public class CurrentHuntsFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement ViewChanger");
         }
+        if (context instanceof LocationSource) {
+            locationSource = (LocationSource)context;
+            locationSource.subscribe(this);
+        }
+        else {
+            throw new RuntimeException(context.toString()
+                    + " must implement ViewChanger");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        locationSource.unSubscribe(this);
     }
 
 
@@ -69,7 +96,15 @@ public class CurrentHuntsFragment extends Fragment {
                 viewChanger.changeView(MyHuntsFragment.newInstance(user), "My Hunts");
             }
         });
+
+        latTextView = view.findViewById(R.id.latTextView);
+        longTextView = view.findViewById(R.id.longTextView);
         return view;
     }
 
+    @Override
+    public void updateLocation(Location location) {
+        latTextView.setText("Lat: " + location.getLatitude());
+        longTextView.setText("Long: " + location.getLongitude());
+    }
 }

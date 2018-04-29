@@ -11,6 +11,16 @@
         tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.MyHuntsFragment">
 
 
+        <TextView
+            android:id="@+id/longTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/latTextView"
+            android:layout_alignStart="@+id/latTextView"
+            android:layout_below="@+id/latTextView"
+            android:layout_marginTop="21dp"
+            android:text="Long: " />
+
         <Button
             android:id="@+id/myHuntsButton"
             android:layout_width="wrap_content"
@@ -22,5 +32,15 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="310dp"
             android:text="My Hunts" />
+
+        <TextView
+            android:id="@+id/latTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/myHuntsButton"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/myHuntsButton"
+            android:layout_marginTop="88dp"
+            android:text="Lat:" />
     </RelativeLayout>
 </ScrollView>
