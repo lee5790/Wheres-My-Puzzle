@@ -20,6 +20,7 @@ public class MyHuntsFragment extends Fragment implements MyHuntListAdapter.HuntL
     private ViewChanger viewChanger;
 
     private RecyclerView recyclerView;
+    private Button backButton;
     private Button createButton;
 
     public MyHuntsFragment() {
@@ -47,6 +48,14 @@ public class MyHuntsFragment extends Fragment implements MyHuntListAdapter.HuntL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_hunts, container, false);
+
+        backButton = view.findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewChanger.changeViewAndBack(CurrentHuntsFragment.newInstance(user));
+            }
+        });
 
         createButton = view.findViewById(R.id.createButton);
         createButton.setOnClickListener(new View.OnClickListener() {

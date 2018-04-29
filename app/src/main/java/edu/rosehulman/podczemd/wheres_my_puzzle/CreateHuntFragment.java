@@ -59,7 +59,7 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user), "My Hunts");
+                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user));
             }
         });
 
@@ -68,7 +68,7 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
             @Override
             public void onClick(View v) {
                 user.removeCreatedHunts(hunt);
-                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user), "My Hunts");
+                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user));
             }
         });
 
@@ -98,7 +98,7 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
                 if(!user.getCreatedHunts().contains(hunt)) {
                     user.addCreatedHunts(hunt);
                 }
-                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user), "My Hunts");
+                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user));
             }
         });
 
