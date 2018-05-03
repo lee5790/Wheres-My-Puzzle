@@ -17,6 +17,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.LocationObserver;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.LocationSource;
@@ -40,6 +41,8 @@ public class CurrentHuntsFragment extends Fragment implements LocationObserver, 
     private MapView mapView;
     private GoogleMap map;
 
+    private boolean firstUpdate;
+
 
     public CurrentHuntsFragment() {
         // Required empty public constructor
@@ -56,6 +59,7 @@ public class CurrentHuntsFragment extends Fragment implements LocationObserver, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        firstUpdate = true;
         if (getArguments() != null) {
             user = getArguments().getParcelable(ARG_USER);
         }
@@ -116,9 +120,13 @@ public class CurrentHuntsFragment extends Fragment implements LocationObserver, 
     @Override
     public void updateLocation(Location location) {
         LatLng currentLatLing = new LatLng(location.getLatitude(), location.getLongitude());
-        map.clear();
-        map.addCircle(new CircleOptions().center(currentLatLing));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLing, 17));
+        map.addCircle(new CircleOptions().center(currentLatLing).radius(3));
+        if(firstUpdate) {
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLing, 17));
+            firstUpdate = false;
+        } else {
+            map.moveCamera(CameraUpdateFactory.newLatLng(currentLatLing));
+        }
     }
 
 
@@ -126,6 +134,13 @@ public class CurrentHuntsFragment extends Fragment implements LocationObserver, 
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.getUiSettings().setZoomControlsEnabled(true);
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                map.clear();
+                map.addMarker(new MarkerOptions().position(latLng));
+            }
+        });
     }
 
     @Override

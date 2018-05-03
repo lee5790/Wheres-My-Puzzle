@@ -15,7 +15,7 @@ public class User implements Parcelable{
     private ArrayList<Hunt> currentHunts;
     private ArrayList<Hunt> createdHunts;
 
-    User(String username, String password) {
+    public User(String username, String password) {
         this.setUsername(username);
         this.setPassword(password);
         currentHunts = new ArrayList<Hunt>();
