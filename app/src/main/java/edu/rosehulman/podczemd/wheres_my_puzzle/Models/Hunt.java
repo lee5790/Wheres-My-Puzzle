@@ -1,6 +1,5 @@
-package edu.rosehulman.podczemd.wheres_my_puzzle;
+package edu.rosehulman.podczemd.wheres_my_puzzle.Models;
 
-import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 

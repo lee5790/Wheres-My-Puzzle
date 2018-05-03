@@ -1,4 +1,4 @@
-package edu.rosehulman.podczemd.wheres_my_puzzle;
+package edu.rosehulman.podczemd.wheres_my_puzzle.Adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hint;
+import edu.rosehulman.podczemd.wheres_my_puzzle.R;
 
 /**
  * Created by bettsld on 4/22/2018.

@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.CreateHuntFragment">
+        tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.CreateHuntFragment">
 
         <Button
             android:id="@+id/cancelButton"

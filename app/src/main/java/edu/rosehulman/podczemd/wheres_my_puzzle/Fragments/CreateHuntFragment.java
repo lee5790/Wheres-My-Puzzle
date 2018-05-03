@@ -1,4 +1,4 @@
-package edu.rosehulman.podczemd.wheres_my_puzzle;
+package edu.rosehulman.podczemd.wheres_my_puzzle.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,11 +11,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hint;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Adapter.HintListAdapter;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hunt;
+import edu.rosehulman.podczemd.wheres_my_puzzle.R;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Models.User;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.ViewChanger;
+
 import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_HUNT;
 import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_USER;
 
 
-public class CreateHuntFragment extends Fragment implements HintListAdapter.HintListCallback{
+public class CreateHuntFragment extends Fragment implements HintListAdapter.HintListCallback {
 
     private User user;
     private ViewChanger viewChanger;

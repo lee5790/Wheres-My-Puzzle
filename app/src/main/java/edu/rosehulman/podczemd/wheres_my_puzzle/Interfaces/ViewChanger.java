@@ -1,4 +1,4 @@
-package edu.rosehulman.podczemd.wheres_my_puzzle;
+package edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces;
 
 import android.support.v4.app.Fragment;
 

@@ -1,36 +1,29 @@
-package edu.rosehulman.podczemd.wheres_my_puzzle;
+package edu.rosehulman.podczemd.wheres_my_puzzle.Fragments;
 
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import static android.content.Context.LOCATION_SERVICE;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.LocationObserver;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.LocationSource;
+import edu.rosehulman.podczemd.wheres_my_puzzle.R;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Models.User;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.ViewChanger;
+
 import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_USER;
 
 

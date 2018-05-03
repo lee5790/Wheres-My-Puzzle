@@ -15,7 +15,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
-import java.util.Observable;
+
+import edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.CurrentHuntsFragment;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.LocationObserver;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.LocationSource;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.ViewChanger;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Models.User;
 
 public class MainActivity extends AppCompatActivity implements ViewChanger, LocationSource, LocationListener {
     public static final String ARG_USER = "user";
