@@ -51,6 +51,14 @@
             android:hint="@string/hint_details"
             android:inputType="textMultiLine" />
 
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
+
         <EditText
             android:id="@+id/latitudeEditText"
             android:layout_width="wrap_content"
