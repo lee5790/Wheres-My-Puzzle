@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="700dp"
+        android:layout_height="wrap_content"
         tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.CreateHintFragment">
 
         <Button
@@ -57,38 +57,17 @@
             android:layout_height="300dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true" />
-
-        <EditText
-            android:id="@+id/latitudeEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/hintDetailEditText"
-            android:layout_alignStart="@+id/hintDetailEditText"
             android:layout_below="@+id/hintDetailEditText"
-            android:layout_marginTop="30dp"
-            android:ems="10"
-            android:hint="@string/latitude"
-            android:inputType="textPersonName" />
+            android:layout_marginTop="10dp" />
 
-        <EditText
-            android:id="@+id/longitudeEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/latitudeEditText"
-            android:layout_alignStart="@+id/latitudeEditText"
-            android:layout_below="@+id/latitudeEditText"
-            android:ems="10"
-            android:hint="@string/longitude"
-            android:inputType="textPersonName" />
 
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/longitudeEditText"
-            android:layout_alignStart="@+id/longitudeEditText"
-            android:layout_below="@+id/longitudeEditText"
+            android:layout_alignLeft="@+id/hintDetailEditText"
+            android:layout_alignStart="@+id/hintDetailEditText"
+            android:layout_below="@+id/mapView"
             android:layout_marginTop="10dp"
             android:text="@string/finish_message_prompt"
             android:textSize="18sp" />

@@ -44,8 +44,6 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
     private Button deleteButton;
     private Button finishButton;
     EditText hintText;
-    EditText latitudeText;
-    EditText longitudeText;
     EditText finishText;
 
     private MapView mapView;
@@ -73,6 +71,9 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
             user = getArguments().getParcelable(ARG_USER);
             hunt = getArguments().getParcelable(ARG_HUNT);
             hint = getArguments().getParcelable(ARG_HINT);
+            if (hint.getLatitude() == 0 && hint.getLongitude() == 0) {
+                locationSource.subscribe(this);
+            }
         }
         if (mapView != null) {
             mapView.onCreate(savedInstanceState);
@@ -113,11 +114,10 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
         this.hintText = view.findViewById(R.id.hintDetailEditText);
         this.hintText.setText(hint.getHint());
 
-        this.latitudeText = view.findViewById(R.id.latitudeEditText);
-        this.latitudeText.setText("" + hint.getLatitude());
 
-        this.longitudeText = view.findViewById(R.id.longitudeEditText);
-        this.longitudeText.setText("" + hint.getLongitude());
+        mapView = view.findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
 
         this.finishText = view.findViewById(R.id.hintFinishMessageEditText);
         this.finishText.setText(hint.getFinishMessage());
@@ -136,7 +136,6 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
         }
         if (context instanceof LocationSource) {
             locationSource = (LocationSource)context;
-            locationSource.subscribe(this);
         }
         else {
             throw new RuntimeException(context.toString()
@@ -148,6 +147,7 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
     public void onDetach() {
         super.onDetach();
         locationSource.unSubscribe(this);
+        locationSource = null;
     }
 
     @Override
@@ -157,6 +157,7 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
         map.addMarker(new MarkerOptions().position(currentLatLng));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17));
         locationSource.unSubscribe(this);
+        locationSource = null;
     }
 
 
@@ -170,8 +171,19 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
                 currentLatLng = latLng;
                 map.clear();
                 map.addMarker(new MarkerOptions().position(latLng));
+                if (locationSource != null) {
+                    locationSource.unSubscribe(CreateHintFragment.this);
+                    locationSource = null;
+                }
             }
         });
+        if(hint.getLatitude() != 0 || hint.getLongitude() != 0) {
+            map.clear();
+            currentLatLng = new LatLng(hint.getLatitude(), hint.getLongitude());
+            map.addMarker(new MarkerOptions().position(currentLatLng));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17));
+            locationSource = null;
+        }
     }
 
     private void finalizeHint(){

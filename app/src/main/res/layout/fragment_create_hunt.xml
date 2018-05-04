@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.CreateHuntFragment">
 
         <Button
@@ -75,11 +75,21 @@
             android:hint="@string/description_hint"
             android:inputType="textMultiLine" />
 
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/descriptionEditText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Hints"
+            android:textSize="24sp" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/hintRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/descriptionEditText"
+            android:layout_below="@+id/textView5"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp" />
 
