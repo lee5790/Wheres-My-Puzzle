@@ -3,6 +3,7 @@ package edu.rosehulman.podczemd.wheres_my_puzzle.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -147,9 +148,17 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
         if(distanceFromGoal < ACCEPTABLE_DISTANCE_FROM_GOAL){
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage(currentHint.getFinishMessage());
+            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    hunt.incCurrentHint();
+                    updateHintText();
+                }
+            });
             builder.create().show();
-            hunt.incCurrentHint();
-            updateHintText();
+
+
+
         }
         else{
             Toast.makeText(getContext(),"Wrong Location",Toast.LENGTH_SHORT).show();
@@ -157,8 +166,24 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
     }
 
     private void updateHintText() {
-        Hint currentHint = hunt.getHints().get(hunt.getCurrentHint());
-        hintText.setText(currentHint.getHint());
+        if(hunt.getCurrentHint()>=hunt.getHints().size()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(hunt.getFinalMessage());
+            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    user.getCurrentHunts().remove(hunt);
+                    viewChanger.changeViewAndBack(CurrentHuntsFragment.newInstance(user));
+                }
+            });
+            builder.create().show();
+
+
+        }
+        else{
+            Hint currentHint = hunt.getHints().get(hunt.getCurrentHint());
+            hintText.setText(currentHint.getHint());
+        }
     }
 
     public double CalculationByDistance(LatLng StartP, LatLng EndP) {
