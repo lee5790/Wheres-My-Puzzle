@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import edu.rosehulman.podczemd.wheres_my_puzzle.Adapter.MyHuntListAdapter;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Adapter.HuntListAdapter;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hunt;
 import edu.rosehulman.podczemd.wheres_my_puzzle.R;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Models.User;
@@ -23,7 +23,7 @@ import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_USER;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CurrentHuntsFragment extends Fragment implements MyHuntListAdapter.HuntListCallback{
+public class CurrentHuntsFragment extends Fragment implements HuntListAdapter.HuntListCallback{
 
     private User user;
     private ViewChanger viewChanger;
@@ -62,7 +62,7 @@ public class CurrentHuntsFragment extends Fragment implements MyHuntListAdapter.
 
         recyclerView = view.findViewById(R.id.currentHuntsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new MyHuntListAdapter(user.getCreatedHunts(), this));
+        recyclerView.setAdapter(new HuntListAdapter(user.getCurrentHunts(), this));
 
         myHuntsButton = view.findViewById(R.id.myHuntsButton);
         myHuntsButton.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +103,6 @@ public class CurrentHuntsFragment extends Fragment implements MyHuntListAdapter.
 
     @Override
     public void huntSelected(Hunt hunt) {
-
+        viewChanger.changeView(ActiveHuntFragment.newInstance(user, hunt), "Active Hunt");
     }
 }

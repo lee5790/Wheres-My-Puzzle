@@ -15,12 +15,12 @@ import edu.rosehulman.podczemd.wheres_my_puzzle.R;
  * Created by bettsld on 4/22/2018.
  */
 
-public class MyHuntListAdapter extends RecyclerView.Adapter<MyHuntListAdapter.ViewHolder> {
+public class HuntListAdapter extends RecyclerView.Adapter<HuntListAdapter.ViewHolder> {
 
     private ArrayList<Hunt> hunts;
     private HuntListCallback callback;
 
-    public MyHuntListAdapter (ArrayList<Hunt> hunts, HuntListCallback callback) {
+    public HuntListAdapter(ArrayList<Hunt> hunts, HuntListCallback callback) {
         this.hunts = hunts;
         this.callback = callback;
     }
