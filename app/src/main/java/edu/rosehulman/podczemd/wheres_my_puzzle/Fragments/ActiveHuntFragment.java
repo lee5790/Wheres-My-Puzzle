@@ -129,6 +129,14 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
         titleText = view.findViewById(R.id.activeHuntTitleTextView);
         titleText.setText(hunt.getTitle());
         hintText = view.findViewById(R.id.activeHuntHintTextView);
+        hintText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(hunt.getHints().get(hunt.getCurrentHint()).getHint());
+                builder.create().show();
+            }
+        });
         mapView = view.findViewById(R.id.activeHuntMapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
