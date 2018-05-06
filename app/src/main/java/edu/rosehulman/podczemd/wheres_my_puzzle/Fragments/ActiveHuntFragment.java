@@ -40,7 +40,7 @@ import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_USER;
  */
 public class ActiveHuntFragment extends Fragment implements LocationObserver, OnMapReadyCallback {
 
-    private static final double ACCEPTABLE_DISTANCE_FROM_GOAL = 10;
+    private static final double ACCEPTABLE_DISTANCE_FROM_GOAL = 0.04;// 40 meters
     private User user;
     private ViewChanger viewChanger;
     private LocationSource locationSource;
@@ -118,6 +118,11 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
         View view = inflater.inflate(R.layout.fragment_active_hunt, container, false);
 
         backButton = view.findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewChanger.changeViewAndBack(CurrentHuntsFragment.newInstance(user));            }
+        });
         checkLocationButton = view.findViewById(R.id.checkLocationButton);
         previousHintsButton = view.findViewById(R.id.previousHintsButton);
         titleText = view.findViewById(R.id.activeHuntTitleTextView);
