@@ -62,8 +62,8 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
         // Required empty public constructor
     }
 
-    public static CurrentHuntsFragment newInstance(User user, Hunt hunt) {
-        CurrentHuntsFragment fragment = new CurrentHuntsFragment();
+    public static ActiveHuntFragment newInstance(User user, Hunt hunt) {
+        ActiveHuntFragment fragment = new ActiveHuntFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_USER, user);
         args.putParcelable(ARG_HUNT, hunt);
