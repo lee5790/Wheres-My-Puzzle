@@ -21,4 +21,7 @@
     <string name="finish">Finish</string>
     <string name="my_hunts">My Hunts</string>
     <string name="create_a_hunt">Create a Hunt</string>
+    <string name="hints">Hints</string>
+    <string name="current_hunts">Current Hunts</string>
+    <string name="join_new_hunt">Join new hunt</string>
 </resources>

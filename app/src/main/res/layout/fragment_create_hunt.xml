@@ -82,7 +82,7 @@
             android:layout_below="@+id/descriptionEditText"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="Hints"
+            android:text="@string/hints"
             android:textSize="24sp" />
 
         <android.support.v7.widget.RecyclerView

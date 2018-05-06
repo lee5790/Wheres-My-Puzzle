@@ -4,10 +4,15 @@ package edu.rosehulman.podczemd.wheres_my_puzzle.Fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import edu.rosehulman.podczemd.wheres_my_puzzle.Adapter.MyHuntListAdapter;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hunt;
 import edu.rosehulman.podczemd.wheres_my_puzzle.R;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Models.User;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.ViewChanger;
@@ -18,12 +23,14 @@ import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_USER;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CurrentHuntsFragment extends Fragment {
+public class CurrentHuntsFragment extends Fragment implements MyHuntListAdapter.HuntListCallback{
 
     private User user;
     private ViewChanger viewChanger;
 
+    private RecyclerView recyclerView;
     private Button myHuntsButton;
+    private Button joinHuntButton;
 
 
     public CurrentHuntsFragment() {
@@ -46,6 +53,37 @@ public class CurrentHuntsFragment extends Fragment {
         }
     }
 
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_current_hunts, container, false);
+
+        recyclerView = view.findViewById(R.id.currentHuntsRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(new MyHuntListAdapter(user.getCreatedHunts(), this));
+
+        myHuntsButton = view.findViewById(R.id.myHuntsButton);
+        myHuntsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewChanger.changeView(MyHuntsFragment.newInstance(user), "My Hunts");
+            }
+        });
+
+        joinHuntButton = view.findViewById(R.id.joinHuntButton);
+        joinHuntButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO change to join hunt screen next sprint
+                viewChanger.changeView(ActiveHuntFragment.newInstance(user, user.getCreatedHunts().get(0)), "Active Hunt");
+            }
+        });
+
+        return view;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -63,21 +101,8 @@ public class CurrentHuntsFragment extends Fragment {
         super.onDetach();
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_current_hunts, container, false);
+    public void huntSelected(Hunt hunt) {
 
-        myHuntsButton = view.findViewById(R.id.myHuntsButton);
-        myHuntsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewChanger.changeView(MyHuntsFragment.newInstance(user), "My Hunts");
-            }
-        });
-
-        return view;
     }
 }
