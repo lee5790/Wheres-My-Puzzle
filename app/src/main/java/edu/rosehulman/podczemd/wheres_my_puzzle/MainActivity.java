@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
 
     private LocationManager locationManager;
     private ArrayList<LocationObserver> observers;
+    private Location lastKnownLocation;
 
 
     @Override
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,
                 1, this);
+        lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
 
     @Override
@@ -112,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
 
     @Override
     public void onLocationChanged(Location location) {
+        lastKnownLocation = location;
         for(LocationObserver obs: observers) {
             obs.updateLocation(location);
         }
@@ -135,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
     @Override
     public void subscribe(LocationObserver obs) {
         observers.add(obs);
+        obs.updateLocation(lastKnownLocation);
     }
 
     @Override
