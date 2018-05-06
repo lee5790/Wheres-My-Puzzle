@@ -71,9 +71,6 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
             user = getArguments().getParcelable(ARG_USER);
             hunt = getArguments().getParcelable(ARG_HUNT);
             hint = getArguments().getParcelable(ARG_HINT);
-            if (hint.getLatitude() == 0 && hint.getLongitude() == 0) {
-                locationSource.subscribe(this);
-            }
         }
         if (mapView != null) {
             mapView.onCreate(savedInstanceState);
@@ -146,8 +143,10 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
     @Override
     public void onDetach() {
         super.onDetach();
-        locationSource.unSubscribe(this);
-        locationSource = null;
+        if (locationSource != null) {
+            locationSource.unSubscribe(this);
+            locationSource = null;
+        }
     }
 
     @Override
@@ -177,7 +176,10 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
                 }
             }
         });
-        if(hint.getLatitude() != 0 || hint.getLongitude() != 0) {
+        if (hint.getLatitude() == 0 && hint.getLongitude() == 0) {
+            locationSource.subscribe(this);
+        }
+        else {
             map.clear();
             currentLatLng = new LatLng(hint.getLatitude(), hint.getLongitude());
             map.addMarker(new MarkerOptions().position(currentLatLng));

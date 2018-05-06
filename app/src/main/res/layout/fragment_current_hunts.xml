@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="700dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.MyHuntsFragment">
+        tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.CurrentHuntsFragment">
 
         <Button
             android:id="@+id/myHuntsButton"
@@ -16,18 +16,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/mapView"
             android:layout_marginLeft="51dp"
             android:layout_marginStart="51dp"
             android:layout_marginTop="62dp"
             android:text="My Hunts" />
-
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true" />
     </RelativeLayout>
 </ScrollView>
