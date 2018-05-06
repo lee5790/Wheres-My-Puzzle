@@ -68,7 +68,7 @@ public class CurrentHuntsFragment extends Fragment {
         joinHuntButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO chang eto join hunt screen next sprint
+                //TODO change to join hunt screen next sprint
                 viewChanger.changeView(ActiveHuntFragment.newInstance(user, user.getCreatedHunts().get(0)), "Active Hunt");
             }
         });
