@@ -4,6 +4,7 @@ package edu.rosehulman.podczemd.wheres_my_puzzle.Fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,9 @@ public class CurrentHuntsFragment extends Fragment {
     private User user;
     private ViewChanger viewChanger;
 
+    private RecyclerView recyclerView;
     private Button myHuntsButton;
+    private Button joinHuntButton;
 
 
     public CurrentHuntsFragment() {
@@ -46,23 +49,6 @@ public class CurrentHuntsFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof ViewChanger) {
-            viewChanger = (ViewChanger) context;
-        }
-        else {
-            throw new RuntimeException(context.toString()
-                    + " must implement ViewChanger");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,6 +64,32 @@ public class CurrentHuntsFragment extends Fragment {
             }
         });
 
+        joinHuntButton = view.findViewById(R.id.joinHuntButton);
+        joinHuntButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO chang eto join hunt screen next sprint
+                viewChanger.changeView(ActiveHuntFragment.newInstance(user, user.getCreatedHunts().get(0)), "Active Hunt");
+            }
+        });
+
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ViewChanger) {
+            viewChanger = (ViewChanger) context;
+        }
+        else {
+            throw new RuntimeException(context.toString()
+                    + " must implement ViewChanger");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 }
