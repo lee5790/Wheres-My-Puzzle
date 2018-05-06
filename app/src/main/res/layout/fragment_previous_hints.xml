@@ -15,7 +15,8 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:text="@string/hint"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -41,26 +42,42 @@
         android:layout_marginTop="10dp"
         android:ems="10"
         android:inputType="textMultiLine"
-        android:lines="3"
+        android:lines="2"
         android:text="Current Hint test test etiewjf efje iijw jeijfiew jiw jfiwjf iwjfiwj fiw w wi w ww ei jeij ie o   u he      jvjmfimeif"
         android:textSize="20sp"
         android:textStyle="bold" />
 
     <com.google.android.gms.maps.MapView
-        android:id="@+id/activeHuntMapView2"
+        android:id="@+id/activeHuntMapView"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="260dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/hintTextView"
         android:layout_marginTop="10dp" />
 
+    <TextView
+        android:id="@+id/finishMessageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/activeHuntMapView"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:lines="2"
+        android:text="Finish Message test test etiewjf efje iijw jeijfiew jiw jfiwjf iwjfiwj fiw w wi w ww ei jeij ie o   u he      jvjmfimeif"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
     <Button
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/finishMessageTextView"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:text="@string/back" />
 
 </RelativeLayout>
