@@ -96,7 +96,6 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
         }
         if (context instanceof LocationSource) {
             locationSource = (LocationSource)context;
-            locationSource.subscribe(this);
         }
         else {
             throw new RuntimeException(context.toString()
@@ -116,7 +115,7 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_current_hunts, container, false);
+        View view = inflater.inflate(R.layout.fragment_active_hunt, container, false);
 
         backButton = view.findViewById(R.id.backButton);
         checkLocationButton = view.findViewById(R.id.checkLocationButton);
@@ -200,6 +199,7 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.getUiSettings().setZoomControlsEnabled(true);
+        locationSource.subscribe(this);
     }
 
     @Override
