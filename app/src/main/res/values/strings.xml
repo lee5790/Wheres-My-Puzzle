@@ -24,4 +24,5 @@
     <string name="hints">Hints</string>
     <string name="current_hunts">Current Hunts</string>
     <string name="join_new_hunt">Join new hunt</string>
+    <string name="back">Back</string>
 </resources>
