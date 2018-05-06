@@ -22,6 +22,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 import java.text.DecimalFormat;
 
@@ -126,6 +127,12 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
         });
         checkLocationButton = view.findViewById(R.id.checkLocationButton);
         previousHintsButton = view.findViewById(R.id.previousHintsButton);
+        previousHintsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewChanger.changeView(PreviousHintsFragment.newInstance(user,hunt),"Previous Hints");
+            }
+        });
         titleText = view.findViewById(R.id.activeHuntTitleTextView);
         titleText.setText(hunt.getTitle());
         hintText = view.findViewById(R.id.activeHuntHintTextView);
@@ -238,6 +245,12 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
         map = googleMap;
         map.getUiSettings().setZoomControlsEnabled(true);
         locationSource.subscribe(this);
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                return true;
+            }
+        });
     }
 
     @Override

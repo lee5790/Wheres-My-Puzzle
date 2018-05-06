@@ -16,6 +16,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.LocationObserver;
@@ -174,6 +175,12 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
                     locationSource.unSubscribe(CreateHintFragment.this);
                     locationSource = null;
                 }
+            }
+        });
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                return true;
             }
         });
         if (hint.getLatitude() == 0 && hint.getLongitude() == 0) {
