@@ -1,36 +1,62 @@
 package edu.rosehulman.podczemd.wheres_my_puzzle;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 import edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.CurrentHuntsFragment;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.LoginFragment;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.LocationObserver;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.LocationSource;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.ViewChanger;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Models.User;
 
-public class MainActivity extends AppCompatActivity implements ViewChanger, LocationSource, LocationListener {
+public class MainActivity extends AppCompatActivity implements ViewChanger, LocationSource, LocationListener, LoginFragment.OnLoginListener {
     public static final String ARG_USER = "user";
     public static final String ARG_HUNT = "hunt";
     public static final String ARG_HINT = "hint";
     private static final int PERMISSION_REQUEST_CODE = 1;
+    private static final int RC_SIGN_IN = 2;
 
     private LocationManager locationManager;
     private ArrayList<LocationObserver> observers;
     private Location lastKnownLocation;
+    private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private OnCompleteListener onCompleteListener;
+    private GoogleSignInClient googleSignInClient;
 
 
     @Override
@@ -53,6 +79,57 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
             ft.replace(R.id.fragment_container, CurrentHuntsFragment.newInstance(user));
             ft.commit();
         }
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("title");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                setTitle((String) dataSnapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        auth = FirebaseAuth.getInstance();
+        initializeListeners();
+        initializeGoogle();
+    }
+
+    private void initializeListeners() {
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                Log.d("tag", "User: " + user);
+                if (user != null) {
+                    //TODO refactor newInstance of everything to be based on User string or database ref, not User object
+                    changeView(CurrentHuntsFragment.newInstance(new User(user.getUid(), "")), "Current Hunts");
+                } else {
+                    changeView(new LoginFragment(), "Login");
+                }
+            }
+        };
+        onCompleteListener = new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (!task.isSuccessful()) {
+                    showLoginError("Login failed");
+                }
+            }
+        };
+    }
+
+    private void initializeGoogle() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
     @Override
@@ -144,5 +221,66 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
     @Override
     public void unSubscribe(LocationObserver obs) {
         observers.remove(obs);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (authStateListener != null) {
+            auth.removeAuthStateListener(authStateListener);
+        }
+    }
+
+    @Override
+    public void onLogin(String email, String password) {
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(onCompleteListener);
+    }
+
+    @Override
+    public void onGoogleLogin() {
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onLogout() {
+        auth.signOut();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                showLoginError("Google sign in failed");
+                // ...
+            }
+        }
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d("tag", "firebaseAuthWithGoogle:" + acct.getId());
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(this, onCompleteListener);
+    }
+
+    private void showLoginError(String message) {
+        LoginFragment loginFragment = (LoginFragment) getSupportFragmentManager().findFragmentByTag("Login");
+        loginFragment.onLoginError(message);
     }
 }
