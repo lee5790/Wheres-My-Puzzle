@@ -37,10 +37,10 @@ public class CurrentHuntsFragment extends Fragment implements HuntListAdapter.Hu
         // Required empty public constructor
     }
 
-    public static CurrentHuntsFragment newInstance(User user) {
+    public static CurrentHuntsFragment newInstance(String uid) {
         CurrentHuntsFragment fragment = new CurrentHuntsFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_USER, user);
+        args.putString(ARG_USER, uid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,7 +49,8 @@ public class CurrentHuntsFragment extends Fragment implements HuntListAdapter.Hu
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            user = getArguments().getParcelable(ARG_USER);
+            String uid = getArguments().getString(ARG_USER);
+            user = new User(uid, "");
         }
     }
 

@@ -10,7 +10,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.LoginFragment">
+    tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.CreateAccountFragment">
 
     <TextView
         android:id="@+id/fragment_login_title"
@@ -59,7 +59,7 @@
             android:inputType="textPassword"
             android:maxLines="1"
             android:singleLine="true"
-         />
+            />
 
         <Button
             android:id="@+id/email_sign_in_button"
@@ -75,19 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp" >
-
-        </com.google.android.gms.common.SignInButton>
-
-
-        <Button
-            android:id="@+id/create_account_button"
-            style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/create_account"
-            android:textStyle="bold" />
+            android:layout_marginTop="16dp" />
 
     </LinearLayout>
 </LinearLayout>

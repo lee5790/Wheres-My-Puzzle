@@ -1,5 +1,6 @@
 package edu.rosehulman.podczemd.wheres_my_puzzle.Fragments;
 
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,21 +19,21 @@ import com.google.android.gms.common.SignInButton;
 
 import edu.rosehulman.podczemd.wheres_my_puzzle.R;
 
-
 /**
- * A placeholder fragment containing a simple view.
+ * A simple {@link Fragment} subclass.
  */
-public class LoginFragment extends Fragment {
+public class CreateAccountFragment extends Fragment {
+
 
     private EditText mPasswordView;
     private EditText mEmailView;
     private View mLoginForm;
     private View mProgressSpinner;
     private boolean mLoggingIn;
-    private OnLoginListener mListener;
+    private LoginFragment.OnLoginListener mListener;
     private SignInButton mGoogleSignInButton;
 
-    public LoginFragment() {
+    public CreateAccountFragment() {
     }
 
     @Override
@@ -44,14 +45,13 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_create_account, container, false);
         mEmailView = (EditText) rootView.findViewById(R.id.email);
         mPasswordView = (EditText) rootView.findViewById(R.id.password);
         mLoginForm = rootView.findViewById(R.id.login_form);
         mProgressSpinner = rootView.findViewById(R.id.login_progress);
         View loginButton = rootView.findViewById(R.id.email_sign_in_button);
         mGoogleSignInButton = (SignInButton) rootView.findViewById(R.id.google_sign_in_button);
-        View createAccountButton = rootView.findViewById(R.id.create_account_button);
         mEmailView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -84,12 +84,6 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 loginWithGoogle();
-            }
-        });
-        createAccountButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onCreateAccount();
             }
         });
         return rootView;
@@ -187,7 +181,7 @@ public class LoginFragment extends Fragment {
     public void onAttach(Context activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnLoginListener) activity;
+            mListener = (LoginFragment.OnLoginListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -204,7 +198,6 @@ public class LoginFragment extends Fragment {
         void onLogin(String email, String password);
 
         void onGoogleLogin();
-
-        void onCreateAccount();
     }
+
 }

@@ -36,6 +36,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.CreateAccountFragment;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.CurrentHuntsFragment;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.LoginFragment;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.LocationObserver;
@@ -75,12 +76,6 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
 
         observers = new ArrayList<LocationObserver>();
 
-        if(savedInstanceState == null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, CurrentHuntsFragment.newInstance(user));
-            ft.commit();
-        }
-
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("title");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -109,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
                 Log.d("tag", "User: " + user);
                 if (user != null) {
                     //TODO refactor newInstance of everything to be based on User string or database ref, not User object
-                    changeView(CurrentHuntsFragment.newInstance(new User(user.getUid(), "")), "Current Hunts");
+                    changeView(CurrentHuntsFragment.newInstance(user.getUid()), "Current Hunts");
                 } else {
                     changeView(new LoginFragment(), "Login");
                 }
@@ -247,6 +242,11 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
     public void onGoogleLogin() {
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onCreateAccount() {
+        this.changeView(new CreateAccountFragment(), "Create Account");
     }
 
     @Override
