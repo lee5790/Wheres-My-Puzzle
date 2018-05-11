@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
     @Override
     public void changeView(Fragment fragment, String transactionName) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_container, fragment);
+        ft.replace(R.id.fragment_container, fragment, transactionName);
         //ft.addToBackStack(transactionName);
         ft.commit();
     }
