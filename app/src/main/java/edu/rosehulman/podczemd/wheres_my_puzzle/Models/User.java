@@ -11,20 +11,20 @@ import java.util.ArrayList;
 
 public class User implements Parcelable{
     private String username;
-    private String password;
+    private String uid;
     private ArrayList<Hunt> currentHunts;
     private ArrayList<Hunt> createdHunts;
 
-    public User(String username, String password) {
+    public User(String username, String uid) {
         this.setUsername(username);
-        this.setPassword(password);
+        this.setUid(uid);
         currentHunts = new ArrayList<Hunt>();
         createdHunts = new ArrayList<Hunt>();
     }
 
     protected User(Parcel in) {
         username = in.readString();
-        password = in.readString();
+        uid = in.readString();
         currentHunts = in.createTypedArrayList(Hunt.CREATOR);
         createdHunts = in.createTypedArrayList(Hunt.CREATOR);
     }
@@ -49,19 +49,19 @@ public class User implements Parcelable{
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUid() {
+        return uid;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public ArrayList<Hunt> getCurrentHunts() {
         return currentHunts;
     }
 
-    public void addCurrentHunts(Hunt currentHunt) {
+    public void addCurrentHunt(Hunt currentHunt) {
         this.currentHunts.add(currentHunt);
     }
 
@@ -69,7 +69,7 @@ public class User implements Parcelable{
         return createdHunts;
     }
 
-    public void addCreatedHunts(Hunt createdHunt) {
+    public void addCreatedHunt(Hunt createdHunt) {
         this.createdHunts.add(createdHunt);
     }
 
@@ -85,7 +85,7 @@ public class User implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(username);
-        dest.writeString(password);
+        dest.writeString(uid);
         dest.writeTypedList(currentHunts);
         dest.writeTypedList(createdHunts);
     }

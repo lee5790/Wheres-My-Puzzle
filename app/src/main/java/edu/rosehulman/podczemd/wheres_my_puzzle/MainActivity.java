@@ -1,6 +1,7 @@
 package edu.rosehulman.podczemd.wheres_my_puzzle;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -11,11 +12,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -43,6 +47,8 @@ import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.LocationObserver;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.LocationSource;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.OnLogoutListener;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.ViewChanger;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hint;
+import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hunt;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Models.User;
 
 public class MainActivity extends AppCompatActivity implements ViewChanger, LocationSource, LocationListener, LoginFragment.OnLoginListener, OnLogoutListener{
@@ -100,11 +106,25 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
                 Log.d("tag", "User: " + user);
                 if (user != null) {
-                    //TODO refactor newInstance of everything to be based on User string or database ref, not User object
-                    changeView(CurrentHuntsFragment.newInstance(user.getUid()), "Current Hunts");
+                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
+                    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null) {
+                                changeView(CurrentHuntsFragment.newInstance(user.getUid()), "Current Hunts");
+                            } else {
+                                newUserDialog(user);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 } else {
                     changeView(new LoginFragment(), "Login");
                 }
@@ -118,6 +138,25 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
                 }
             }
         };
+    }
+
+    private void newUserDialog(final FirebaseUser firebaseUser) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose a Username");
+        View view = getLayoutInflater().inflate(R.layout.dialog_new_user, null, false);
+        builder.setView(view);
+        final EditText usernameEditText = view.findViewById(R.id.usernameEditText);
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                User user = new User(usernameEditText.getText().toString(), firebaseUser.getUid());
+                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
+                userRef.setValue(user);
+                changeView(CurrentHuntsFragment.newInstance(user.getUid()), "Current Hunts");
+            }
+        });
+        builder.setCancelable(false);
+        builder.show();
     }
 
     private void initializeGoogle() {

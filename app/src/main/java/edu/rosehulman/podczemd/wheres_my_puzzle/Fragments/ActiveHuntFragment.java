@@ -123,7 +123,7 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewChanger.changeViewAndBack(CurrentHuntsFragment.newInstance(user));            }
+                viewChanger.changeViewAndBack(CurrentHuntsFragment.newInstance(user.getUid()));            }
         });
         checkLocationButton = view.findViewById(R.id.checkLocationButton);
         previousHintsButton = view.findViewById(R.id.previousHintsButton);
@@ -188,7 +188,7 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     user.getCurrentHunts().remove(hunt);
-                    viewChanger.changeViewAndBack(CurrentHuntsFragment.newInstance(user));
+                    viewChanger.changeViewAndBack(CurrentHuntsFragment.newInstance(user.getUid()));
                 }
             });
             builder.create().show();

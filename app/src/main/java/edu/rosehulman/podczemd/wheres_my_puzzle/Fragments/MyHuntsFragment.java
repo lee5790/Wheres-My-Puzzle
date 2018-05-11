@@ -57,7 +57,7 @@ public class MyHuntsFragment extends Fragment implements HuntListAdapter.HuntLis
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewChanger.changeViewAndBack(CurrentHuntsFragment.newInstance(user));
+                viewChanger.changeViewAndBack(CurrentHuntsFragment.newInstance(user.getUid()));
             }
         });
 

@@ -103,9 +103,9 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
             public void onClick(View v) {
                 saveFields();
                 if(!user.getCreatedHunts().contains(hunt)) {
-                    user.addCreatedHunts(hunt);
+                    user.addCreatedHunt(hunt);
                     //TODO remove this line next sprint
-                    user.addCurrentHunts(hunt);
+                    user.addCurrentHunt(hunt);
                 }
                 viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user));
             }

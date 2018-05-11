@@ -14,7 +14,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -84,7 +83,7 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_create_hint, container, false);
         EditText hintDescription = view.findViewById(R.id.hintDetailEditText);
-        hintDescription.setText(user.getPassword());
+        hintDescription.setText(user.getUid());
         cancelButton = view.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
