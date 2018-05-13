@@ -57,6 +57,9 @@ public class MyHuntsFragment extends Fragment implements HuntListAdapter.HuntLis
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     user = dataSnapshot.getValue(User.class);
                     user.setUid(dataSnapshot.getKey());
+                    if(recyclerView != null) {
+                        recyclerView.setAdapter(new HuntListAdapter(user.getUid(), MyHuntsFragment.this));
+                    }
                 }
 
                 @Override
@@ -90,8 +93,9 @@ public class MyHuntsFragment extends Fragment implements HuntListAdapter.HuntLis
 
         recyclerView = view.findViewById(R.id.huntRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new HuntListAdapter(user.getCreatedHunts(), this));
-
+        if(user != null) {
+            recyclerView.setAdapter(new HuntListAdapter(user.getUid(), this));
+        }
         return view;
     }
 

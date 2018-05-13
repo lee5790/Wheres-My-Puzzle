@@ -97,8 +97,6 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user.removeCreatedHunts(hunt);
-                userRef.setValue(user);
                 if (hunt.getKey() != null) {
                     huntsRef.child(hunt.getKey()).removeValue();
                 }
@@ -117,7 +115,7 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
             @Override
             public void onClick(View v) {
                 saveFields();
-                viewChanger.changeView(CreateHintFragment.newInstance(user,hunt,new Hint()), "Create new Hint");
+                viewChanger.changeView(CreateHintFragment.newInstance(user.getUid(),hunt,new Hint()), "Create new Hint");
             }
         });
 
@@ -129,18 +127,18 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
             @Override
             public void onClick(View v) {
                 saveFields();
-                if(!user.getCreatedHunts().contains(hunt)) {
-                    user.addCreatedHunt(hunt);
+                if(hunt.getKey() == null) {
                     DatabaseReference newHuntRef = huntsRef.push();
                     hunt.setKey(newHuntRef.getKey());
                     newHuntRef.setValue(hunt);
-                    //TODO remove this line next sprint
+
+                    //TODO remove the next 2 lines next sprint
                     user.addCurrentHunt(hunt);
+                    userRef.setValue(user);
                 }
                 else {
                     huntsRef.child(hunt.getKey()).setValue(hunt);
                 }
-                userRef.setValue(user);
                 viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user.getUid()));
             }
         });
@@ -178,6 +176,6 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
     @Override
     public void hintSelected(Hint hint) {
         saveFields();
-        viewChanger.changeView(CreateHintFragment.newInstance(user, hunt, hint), "Edit hint");
+        viewChanger.changeView(CreateHintFragment.newInstance(user.getUid(), hunt, hint), "Edit hint");
     }
 }

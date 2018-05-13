@@ -6,6 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hunt;
@@ -22,6 +29,29 @@ public class HuntListAdapter extends RecyclerView.Adapter<HuntListAdapter.ViewHo
 
     public HuntListAdapter(ArrayList<Hunt> hunts, HuntListCallback callback) {
         this.hunts = hunts;
+        this.callback = callback;
+    }
+
+    public HuntListAdapter(String uid, HuntListCallback callback) {
+        hunts = new ArrayList<Hunt>();
+        Query huntsRef = FirebaseDatabase.getInstance().getReference().child("hunts").orderByChild("creatorUID").equalTo(uid);
+        huntsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot huntSnapshot : dataSnapshot.getChildren()) {
+                    Hunt hunt = huntSnapshot.getValue(Hunt.class);
+                    hunt.setKey(huntSnapshot.getKey());
+                    hunts.add(hunt);
+                }
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         this.callback = callback;
     }
 

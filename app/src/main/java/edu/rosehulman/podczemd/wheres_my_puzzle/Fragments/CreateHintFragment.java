@@ -33,7 +33,7 @@ import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_USER;
 
 public class CreateHintFragment extends Fragment implements LocationObserver, OnMapReadyCallback {
 
-    private User user;
+    private String uid;
     private Hunt hunt;
     private Hint hint;
     private ViewChanger viewChanger;
@@ -54,10 +54,10 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
         // Required empty public constructor
     }
 
-    public static CreateHintFragment newInstance(User user, Hunt hunt, Hint hint) {
+    public static CreateHintFragment newInstance(String uid, Hunt hunt, Hint hint) {
         CreateHintFragment fragment = new CreateHintFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_USER, user);
+        args.putString(ARG_USER, uid);
         args.putParcelable(ARG_HUNT, hunt);
         args.putParcelable(ARG_HINT,hint);
         fragment.setArguments(args);
@@ -68,7 +68,7 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            user = getArguments().getParcelable(ARG_USER);
+            uid = getArguments().getString(ARG_USER);
             hunt = getArguments().getParcelable(ARG_HUNT);
             hint = getArguments().getParcelable(ARG_HINT);
         }
@@ -83,12 +83,12 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_create_hint, container, false);
         EditText hintDescription = view.findViewById(R.id.hintDetailEditText);
-        hintDescription.setText(user.getUid());
+        hintDescription.setText(hint.getHint());
         cancelButton = view.findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewChanger.changeViewAndBack(CreateHuntFragment.newInstance(user,hunt));
+                viewChanger.changeViewAndBack(CreateHuntFragment.newInstance(uid,hunt));
             }
         });
 
@@ -97,7 +97,7 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
             @Override
             public void onClick(View v) {
                 hunt.removeHint(hint);
-                viewChanger.changeViewAndBack(CreateHuntFragment.newInstance(user,hunt));
+                viewChanger.changeViewAndBack(CreateHuntFragment.newInstance(uid,hunt));
             }
         });
 
@@ -202,7 +202,7 @@ public class CreateHintFragment extends Fragment implements LocationObserver, On
         if (!hunt.getHints().contains(hint)) {
             hunt.addHint(hint);
         }
-        viewChanger.changeViewAndBack(CreateHuntFragment.newInstance(user,hunt));
+        viewChanger.changeViewAndBack(CreateHuntFragment.newInstance(uid,hunt));
     }
 
 

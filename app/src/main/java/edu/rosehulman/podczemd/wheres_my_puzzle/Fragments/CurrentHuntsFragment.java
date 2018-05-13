@@ -62,6 +62,9 @@ public class CurrentHuntsFragment extends Fragment implements HuntListAdapter.Hu
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     user = dataSnapshot.getValue(User.class);
                     user.setUid(dataSnapshot.getKey());
+                    if(recyclerView != null) {
+                        recyclerView.setAdapter(new HuntListAdapter(user.getCurrentHunts(), CurrentHuntsFragment.this));
+                    }
                 }
 
                 @Override
@@ -81,8 +84,9 @@ public class CurrentHuntsFragment extends Fragment implements HuntListAdapter.Hu
 
         recyclerView = view.findViewById(R.id.currentHuntsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new HuntListAdapter(user.getCurrentHunts(), this));
-
+        if(user != null) {
+            recyclerView.setAdapter(new HuntListAdapter(user.getCurrentHunts(), this));
+        }
         myHuntsButton = view.findViewById(R.id.myHuntsButton);
         myHuntsButton.setOnClickListener(new View.OnClickListener() {
             @Override
