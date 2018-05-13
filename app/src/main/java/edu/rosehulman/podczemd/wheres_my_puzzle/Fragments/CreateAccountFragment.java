@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.SignInButton;
 
+import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.ViewChanger;
 import edu.rosehulman.podczemd.wheres_my_puzzle.R;
 
 /**
@@ -30,8 +31,10 @@ public class CreateAccountFragment extends Fragment {
     private View mLoginForm;
     private View mProgressSpinner;
     private boolean mLoggingIn;
-    private LoginFragment.OnLoginListener mListener;
-    private SignInButton mGoogleSignInButton;
+    private CreateAccountListener mListener;
+    private ViewChanger viewChanger;
+    private EditText mConfirmPassword;
+    private EditText mUsernameView;
 
     public CreateAccountFragment() {
     }
@@ -48,10 +51,12 @@ public class CreateAccountFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_create_account, container, false);
         mEmailView = (EditText) rootView.findViewById(R.id.email);
         mPasswordView = (EditText) rootView.findViewById(R.id.password);
+        mConfirmPassword = rootView.findViewById(R.id.confirmPassword);
+        mUsernameView = rootView.findViewById(R.id.username);
         mLoginForm = rootView.findViewById(R.id.login_form);
         mProgressSpinner = rootView.findViewById(R.id.login_progress);
-        View loginButton = rootView.findViewById(R.id.email_sign_in_button);
-        mGoogleSignInButton = (SignInButton) rootView.findViewById(R.id.google_sign_in_button);
+        View createButton = rootView.findViewById(R.id.create_button);
+        View cancelButton = rootView.findViewById(R.id.cancel_button);
         mEmailView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -62,48 +67,23 @@ public class CreateAccountFragment extends Fragment {
                 return false;
             }
         });
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_NULL) {
-                    login();
-                    return true;
-                }
-                return false;
-            }
-        });
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login();
+                createAccount();
             }
         });
-        mGoogleSignInButton.setColorScheme(SignInButton.COLOR_LIGHT);
-        mGoogleSignInButton.setSize(SignInButton.SIZE_WIDE);
-        mGoogleSignInButton.setOnClickListener(new View.OnClickListener() {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                loginWithGoogle();
+            public void onClick(View v) {
+                viewChanger.changeView(new LoginFragment(),"Login");
             }
         });
         return rootView;
     }
 
-    private void loginWithGoogle() {
-        if (mLoggingIn) {
-            return;
-        }
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
 
-        showProgress(true);
-        mLoggingIn = true;
-        mListener.onGoogleLogin();
-        hideKeyboard();
-    }
-
-
-    public void login() {
+    public void createAccount() {
         if (mLoggingIn) {
             return;
         }
@@ -113,12 +93,18 @@ public class CreateAccountFragment extends Fragment {
 
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-
+        String confirmPassword = mConfirmPassword.getText().toString();
+        String username = mUsernameView.getText().toString();
         boolean cancelLogin = false;
         View focusView = null;
 
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.invalid_password));
+            focusView = mPasswordView;
+            cancelLogin = true;
+        }
+        else if(!password.equals(confirmPassword)){
+            mPasswordView.setError(getString(R.string.password_do_not_match));
             focusView = mPasswordView;
             cancelLogin = true;
         }
@@ -133,6 +119,12 @@ public class CreateAccountFragment extends Fragment {
             cancelLogin = true;
         }
 
+        if (TextUtils.isEmpty(username)) {
+            mUsernameView.setError(getString(R.string.field_required));
+            focusView = mUsernameView;
+            cancelLogin = true;
+        }
+
         if (cancelLogin) {
             // error in login
             focusView.requestFocus();
@@ -140,7 +132,7 @@ public class CreateAccountFragment extends Fragment {
             // show progress spinner, and start background task to login
             showProgress(true);
             mLoggingIn = true;
-            mListener.onLogin(email, password);
+            mListener.onAccountCreate(username,email, password);
             hideKeyboard();
         }
     }
@@ -166,7 +158,6 @@ public class CreateAccountFragment extends Fragment {
     private void showProgress(boolean show) {
         mProgressSpinner.setVisibility(show ? View.VISIBLE : View.GONE);
         mLoginForm.setVisibility(show ? View.GONE : View.VISIBLE);
-        mGoogleSignInButton.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 
     private boolean isEmailValid(String email) {
@@ -174,14 +165,15 @@ public class CreateAccountFragment extends Fragment {
     }
 
     private boolean isPasswordValid(String password) {
-        return password.length() > 4;
+        return password.length() > 5;
     }
 
     @Override
     public void onAttach(Context activity) {
         super.onAttach(activity);
         try {
-            mListener = (LoginFragment.OnLoginListener) activity;
+            mListener = (CreateAccountListener) activity;
+            viewChanger = (ViewChanger) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -192,12 +184,11 @@ public class CreateAccountFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        viewChanger = null;
     }
 
-    public interface OnLoginListener {
-        void onLogin(String email, String password);
-
-        void onGoogleLogin();
+    public interface CreateAccountListener {
+        void onAccountCreate(String username,String email, String password);
     }
 
 }

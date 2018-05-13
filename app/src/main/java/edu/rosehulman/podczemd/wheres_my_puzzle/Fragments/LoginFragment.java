@@ -180,7 +180,7 @@ public class LoginFragment extends Fragment {
     }
 
     private boolean isPasswordValid(String password) {
-        return password.length() > 4;
+        return password.length() > 5;
     }
 
     @Override

@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -29,6 +30,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -51,7 +53,7 @@ import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hint;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hunt;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Models.User;
 
-public class MainActivity extends AppCompatActivity implements ViewChanger, LocationSource, LocationListener, LoginFragment.OnLoginListener, OnLogoutListener{
+public class MainActivity extends AppCompatActivity implements ViewChanger, LocationSource, LocationListener, LoginFragment.OnLoginListener, OnLogoutListener, CreateAccountFragment.CreateAccountListener{
     public static final String ARG_USER = "user";
     public static final String ARG_HUNT = "hunt";
     public static final String ARG_HINT = "hint";
@@ -325,4 +327,26 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
     }
 
 
+    @Override
+    public void onAccountCreate(final String username, String email, String password) {
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("Success", "createUserWithEmail:success");
+                            FirebaseUser firebaseUser = auth.getCurrentUser();
+                            User user = new User(username, firebaseUser.getUid());
+                            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
+                            userRef.setValue(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("Error", "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 }
