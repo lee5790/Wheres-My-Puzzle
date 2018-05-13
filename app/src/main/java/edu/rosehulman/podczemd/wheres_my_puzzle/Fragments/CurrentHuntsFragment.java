@@ -11,6 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import edu.rosehulman.podczemd.wheres_my_puzzle.Adapter.HuntListAdapter;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hunt;
 import edu.rosehulman.podczemd.wheres_my_puzzle.R;
@@ -50,7 +56,19 @@ public class CurrentHuntsFragment extends Fragment implements HuntListAdapter.Hu
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             String uid = getArguments().getString(ARG_USER);
-            user = new User(uid, "");
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    user = dataSnapshot.getValue(User.class);
+                    user.setUid(dataSnapshot.getKey());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 
@@ -69,7 +87,7 @@ public class CurrentHuntsFragment extends Fragment implements HuntListAdapter.Hu
         myHuntsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewChanger.changeView(MyHuntsFragment.newInstance(user), "My Hunts");
+                viewChanger.changeView(MyHuntsFragment.newInstance(user.getUid()), "My Hunts");
             }
         });
 
@@ -78,7 +96,6 @@ public class CurrentHuntsFragment extends Fragment implements HuntListAdapter.Hu
             @Override
             public void onClick(View v) {
                 //TODO change to join hunt screen next sprint
-                viewChanger.changeView(ActiveHuntFragment.newInstance(user, user.getCreatedHunts().get(0)), "Active Hunt");
             }
         });
 

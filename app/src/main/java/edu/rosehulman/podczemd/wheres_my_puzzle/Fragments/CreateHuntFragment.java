@@ -2,6 +2,7 @@ package edu.rosehulman.podczemd.wheres_my_puzzle.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hint;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Adapter.HintListAdapter;
@@ -35,14 +42,16 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
     private EditText finishMessageEditText;
     private Button finishButton;
     private RecyclerView recyclerView;
+    private DatabaseReference userRef;
+    private DatabaseReference huntsRef;
 
     public CreateHuntFragment() {
     }
 
-    public static CreateHuntFragment newInstance(User user, Hunt hunt) {
+    public static CreateHuntFragment newInstance(String uid, Hunt hunt) {
         CreateHuntFragment fragment = new CreateHuntFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_USER, user);
+        args.putString(ARG_USER, uid);
         args.putParcelable(ARG_HUNT,hunt);
         fragment.setArguments(args);
         return fragment;
@@ -52,9 +61,23 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            user = getArguments().getParcelable(ARG_USER);
+            String uid = getArguments().getString(ARG_USER);
+            userRef = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    user = dataSnapshot.getValue(User.class);
+                    user.setUid(dataSnapshot.getKey());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
             hunt = getArguments().getParcelable(ARG_HUNT);
         }
+        huntsRef = FirebaseDatabase.getInstance().getReference().child("hunts");
     }
 
 
@@ -66,7 +89,7 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user));
+                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user.getUid()));
             }
         });
 
@@ -75,7 +98,11 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
             @Override
             public void onClick(View v) {
                 user.removeCreatedHunts(hunt);
-                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user));
+                userRef.setValue(user);
+                if (hunt.getKey() != null) {
+                    huntsRef.child(hunt.getKey()).removeValue();
+                }
+                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user.getUid()));
             }
         });
 
@@ -104,10 +131,17 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
                 saveFields();
                 if(!user.getCreatedHunts().contains(hunt)) {
                     user.addCreatedHunt(hunt);
+                    DatabaseReference newHuntRef = huntsRef.push();
+                    hunt.setKey(newHuntRef.getKey());
+                    newHuntRef.setValue(hunt);
                     //TODO remove this line next sprint
                     user.addCurrentHunt(hunt);
                 }
-                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user));
+                else {
+                    huntsRef.child(hunt.getKey()).setValue(hunt);
+                }
+                userRef.setValue(user);
+                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user.getUid()));
             }
         });
 

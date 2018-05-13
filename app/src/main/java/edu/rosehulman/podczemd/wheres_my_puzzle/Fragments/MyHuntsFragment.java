@@ -10,6 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hunt;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Adapter.HuntListAdapter;
 import edu.rosehulman.podczemd.wheres_my_puzzle.R;
@@ -32,10 +38,10 @@ public class MyHuntsFragment extends Fragment implements HuntListAdapter.HuntLis
     }
 
 
-    public static MyHuntsFragment newInstance(User user) {
+    public static MyHuntsFragment newInstance(String uid) {
         MyHuntsFragment fragment = new MyHuntsFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_USER, user);
+        args.putString(ARG_USER, uid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,7 +50,20 @@ public class MyHuntsFragment extends Fragment implements HuntListAdapter.HuntLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            user = getArguments().getParcelable(ARG_USER);
+            String uid = getArguments().getString(ARG_USER);
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    user = dataSnapshot.getValue(User.class);
+                    user.setUid(dataSnapshot.getKey());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 
@@ -65,7 +84,7 @@ public class MyHuntsFragment extends Fragment implements HuntListAdapter.HuntLis
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewChanger.changeView(CreateHuntFragment.newInstance(user,new Hunt(user.getUsername())), "Create new hunt");
+                viewChanger.changeView(CreateHuntFragment.newInstance(user.getUid(), new Hunt(user)), "Create new hunt");
             }
         });
 
@@ -95,6 +114,6 @@ public class MyHuntsFragment extends Fragment implements HuntListAdapter.HuntLis
 
     @Override
     public void huntSelected(Hunt hunt) {
-        viewChanger.changeView(CreateHuntFragment.newInstance(user,hunt), "Edit hunt");
+        viewChanger.changeView(CreateHuntFragment.newInstance(user.getUid(), hunt), "Edit hunt");
     }
 }

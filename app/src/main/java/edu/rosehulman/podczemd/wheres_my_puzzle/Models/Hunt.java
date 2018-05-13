@@ -3,6 +3,8 @@ package edu.rosehulman.podczemd.wheres_my_puzzle.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 
 /**
@@ -12,24 +14,32 @@ import java.util.ArrayList;
 public class Hunt implements Parcelable{
     private String title;
     private String creator;
+    private String creatorUID;
     private String description;
     private ArrayList<Hint> hints;
     private String finalMessage;
     private int currentHint = 0;
+    private String key;
 
-    public Hunt(String creator){
-        this.creator=creator;
+    public Hunt () {
         this.hints = new ArrayList<>();
     }
 
+    public Hunt(User user){
+        this.creator = user.getUsername();
+        this.creatorUID = user.getUid();
+        this.hints = new ArrayList<>();
+    }
 
     protected Hunt(Parcel in) {
         title = in.readString();
         creator = in.readString();
+        creatorUID = in.readString();
         description = in.readString();
         hints = in.createTypedArrayList(Hint.CREATOR);
         finalMessage = in.readString();
         currentHint = in.readInt();
+        key = in.readString();
     }
 
     public static final Creator<Hunt> CREATOR = new Creator<Hunt>() {
@@ -96,6 +106,23 @@ public class Hunt implements Parcelable{
         this.currentHint++;
     }
 
+    @Exclude
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getCreatorUID() {
+        return creatorUID;
+    }
+
+    public void setCreatorUID(String creatorUID) {
+        this.creatorUID = creatorUID;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -105,9 +132,11 @@ public class Hunt implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
         dest.writeString(creator);
+        dest.writeString(creatorUID);
         dest.writeString(description);
         dest.writeTypedList(hints);
         dest.writeString(finalMessage);
         dest.writeInt(currentHint);
+        dest.writeString(key);
     }
 }
