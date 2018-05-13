@@ -47,13 +47,10 @@ import edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.CurrentHuntsFragment;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.LoginFragment;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.LocationObserver;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.LocationSource;
-import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.OnLogoutListener;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Interfaces.ViewChanger;
-import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hint;
-import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hunt;
 import edu.rosehulman.podczemd.wheres_my_puzzle.Models.User;
 
-public class MainActivity extends AppCompatActivity implements ViewChanger, LocationSource, LocationListener, LoginFragment.OnLoginListener, OnLogoutListener, CreateAccountFragment.CreateAccountListener{
+public class MainActivity extends AppCompatActivity implements ViewChanger, LocationSource, LocationListener, LoginFragment.OnLoginListener, CreateAccountFragment.CreateAccountListener{
     public static final String ARG_USER = "user";
     public static final String ARG_HUNT = "hunt";
     public static final String ARG_HINT = "hint";
@@ -74,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
         setSupportActionBar(toolbar);
 
         User user = new User("Creator", "12345");
@@ -88,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 setTitle((String) dataSnapshot.getValue());
             }
 
@@ -111,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
                 Log.d("tag", "User: " + user);
                 if (user != null) {
+                    findViewById(R.id.toolbar).setVisibility(View.VISIBLE);
                     DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
                     userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -128,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
                         }
                     });
                 } else {
+                    findViewById(R.id.toolbar).setVisibility(View.GONE);
                     changeView(new LoginFragment(), "Login");
                 }
             }
@@ -172,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_my_hunt, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -184,7 +183,8 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            auth.signOut();
             return true;
         }
 
@@ -288,11 +288,6 @@ public class MainActivity extends AppCompatActivity implements ViewChanger, Loca
     @Override
     public void onCreateAccount() {
         this.changeView(new CreateAccountFragment(), "Create Account");
-    }
-
-    @Override
-    public void onLogout() {
-        auth.signOut();
     }
 
     @Override
