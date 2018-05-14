@@ -93,6 +93,7 @@ public class MyHuntsFragment extends Fragment implements HuntListAdapter.HuntLis
 
         recyclerView = view.findViewById(R.id.huntRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
         if(user != null) {
             recyclerView.setAdapter(new HuntListAdapter(user.getUid(), this));
         }

@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="700dp"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.MyHuntsFragment">
 
@@ -28,7 +28,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:text="@string/back"/>
+            android:text="@string/back" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/huntRecyclerView"

@@ -106,7 +106,6 @@ public class Hunt implements Parcelable{
         this.currentHint++;
     }
 
-    @Exclude
     public String getKey() {
         return key;
     }

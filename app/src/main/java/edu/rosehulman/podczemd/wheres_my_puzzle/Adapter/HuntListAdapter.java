@@ -14,6 +14,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.rosehulman.podczemd.wheres_my_puzzle.Models.Hunt;
 import edu.rosehulman.podczemd.wheres_my_puzzle.R;
@@ -24,10 +25,10 @@ import edu.rosehulman.podczemd.wheres_my_puzzle.R;
 
 public class HuntListAdapter extends RecyclerView.Adapter<HuntListAdapter.ViewHolder> {
 
-    private ArrayList<Hunt> hunts;
+    private List<Hunt> hunts;
     private HuntListCallback callback;
 
-    public HuntListAdapter(ArrayList<Hunt> hunts, HuntListCallback callback) {
+    public HuntListAdapter(List<Hunt> hunts, HuntListCallback callback) {
         this.hunts = hunts;
         this.callback = callback;
     }
@@ -40,7 +41,6 @@ public class HuntListAdapter extends RecyclerView.Adapter<HuntListAdapter.ViewHo
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot huntSnapshot : dataSnapshot.getChildren()) {
                     Hunt hunt = huntSnapshot.getValue(Hunt.class);
-                    hunt.setKey(huntSnapshot.getKey());
                     hunts.add(hunt);
                 }
                 notifyDataSetChanged();
@@ -71,6 +71,11 @@ public class HuntListAdapter extends RecyclerView.Adapter<HuntListAdapter.ViewHo
     @Override
     public int getItemCount() {
         return hunts.size();
+    }
+
+    public void updateData(List<Hunt> newHunts) {
+        hunts = newHunts;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

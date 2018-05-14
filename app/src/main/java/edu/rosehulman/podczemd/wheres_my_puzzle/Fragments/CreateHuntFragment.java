@@ -31,7 +31,7 @@ import static edu.rosehulman.podczemd.wheres_my_puzzle.MainActivity.ARG_USER;
 
 public class CreateHuntFragment extends Fragment implements HintListAdapter.HintListCallback {
 
-    private User user;
+    private String uid;
     private ViewChanger viewChanger;
     private Hunt hunt;
     private Button cancelButton;
@@ -61,20 +61,8 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            String uid = getArguments().getString(ARG_USER);
-            userRef = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
-            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    user = dataSnapshot.getValue(User.class);
-                    user.setUid(dataSnapshot.getKey());
-                }
+            uid = getArguments().getString(ARG_USER);
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
             hunt = getArguments().getParcelable(ARG_HUNT);
         }
         huntsRef = FirebaseDatabase.getInstance().getReference().child("hunts");
@@ -89,7 +77,7 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user.getUid()));
+                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(uid));
             }
         });
 
@@ -100,7 +88,7 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
                 if (hunt.getKey() != null) {
                     huntsRef.child(hunt.getKey()).removeValue();
                 }
-                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user.getUid()));
+                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(uid));
             }
         });
 
@@ -115,7 +103,7 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
             @Override
             public void onClick(View v) {
                 saveFields();
-                viewChanger.changeView(CreateHintFragment.newInstance(user.getUid(),hunt,new Hint()), "Create new Hint");
+                viewChanger.changeView(CreateHintFragment.newInstance(uid,hunt,new Hint()), "Create new Hint");
             }
         });
 
@@ -129,17 +117,12 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
                 saveFields();
                 if(hunt.getKey() == null) {
                     DatabaseReference newHuntRef = huntsRef.push();
-                    hunt.setKey(newHuntRef.getKey());
                     newHuntRef.setValue(hunt);
-
-                    //TODO remove the next 2 lines next sprint
-                    user.addCurrentHunt(hunt);
-                    userRef.setValue(user);
                 }
                 else {
                     huntsRef.child(hunt.getKey()).setValue(hunt);
                 }
-                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(user.getUid()));
+                viewChanger.changeViewAndBack(MyHuntsFragment.newInstance(uid));
             }
         });
 
@@ -176,6 +159,6 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
     @Override
     public void hintSelected(Hint hint) {
         saveFields();
-        viewChanger.changeView(CreateHintFragment.newInstance(user.getUid(), hunt, hint), "Edit hint");
+        viewChanger.changeView(CreateHintFragment.newInstance(uid, hunt, hint), "Edit hint");
     }
 }

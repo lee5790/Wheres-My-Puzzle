@@ -42,6 +42,9 @@
     <string name="username">Username</string>
     <string name="password_do_not_match">Passwords do not match</string>
     <string name="logout">Logout</string>
+    <string name="join_new_hunt_title">Join New Hunt</string>
+    <string name="prev">Prev</string>
+    <string name="next">Next</string>
 
 
 </resources>

@@ -99,7 +99,7 @@ public class CurrentHuntsFragment extends Fragment implements HuntListAdapter.Hu
         joinHuntButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO change to join hunt screen next sprint
+                viewChanger.changeView(JoinNewHuntFragment.newInstance(user.getUid()), "Find New Hunt");
             }
         });
 
