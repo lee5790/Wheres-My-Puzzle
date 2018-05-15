@@ -1,98 +1,92 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.CreateHintFragment">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:context="edu.rosehulman.podczemd.wheres_my_puzzle.Fragments.CreateHintFragment">
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/deleteButton"
+        android:layout_toStartOf="@+id/deleteButton"
+        android:text="Cancel" />
 
-        <Button
-            android:id="@+id/cancelButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="Cancel" />
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/delete" />
 
-        <Button
-            android:id="@+id/deleteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/cancelButton"
-            android:layout_toRightOf="@+id/cancelButton"
-            android:text="@string/delete" />
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/cancelButton"
+        android:layout_alignBottom="@+id/cancelButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="13dp"
+        android:layout_marginStart="13dp"
+        android:text="@string/hint"
+        android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/cancelButton"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/hint"
-            android:textSize="18sp" />
+    <EditText
+        android:id="@+id/hintDetailEditText"
+        android:layout_width="350sp"
+        android:layout_height="60sp"
+        android:layout_alignLeft="@+id/textView5"
+        android:layout_alignStart="@+id/textView5"
+        android:layout_below="@+id/textView5"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="@string/hint_details"
+        android:inputType="textMultiLine" />
 
-        <EditText
-            android:id="@+id/hintDetailEditText"
-            android:layout_width="350sp"
-            android:layout_height="60sp"
-            android:layout_alignLeft="@+id/textView5"
-            android:layout_alignStart="@+id/textView5"
-            android:layout_below="@+id/textView5"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:hint="@string/hint_details"
-            android:inputType="textMultiLine" />
-
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/hintDetailEditText"
-            android:layout_marginTop="10dp" />
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/hintDetailEditText" />
 
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/hintDetailEditText"
-            android:layout_alignStart="@+id/hintDetailEditText"
-            android:layout_below="@+id/mapView"
-            android:layout_marginTop="10dp"
-            android:text="@string/finish_message_prompt"
-            android:textSize="18sp" />
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/hintDetailEditText"
+        android:layout_alignStart="@+id/hintDetailEditText"
+        android:layout_below="@+id/mapView"
+        android:layout_marginTop="10dp"
+        android:text="@string/finish_message_prompt"
+        android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/hintFinishMessageEditText"
-            android:layout_width="350sp"
-            android:layout_height="60sp"
-            android:layout_alignLeft="@+id/textView6"
-            android:layout_alignStart="@+id/textView6"
-            android:layout_below="@+id/textView6"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:hint="@string/finish_message_hint"
-            android:inputType="textMultiLine" />
+    <EditText
+        android:id="@+id/hintFinishMessageEditText"
+        android:layout_width="350sp"
+        android:layout_height="60sp"
+        android:layout_alignLeft="@+id/textView6"
+        android:layout_alignStart="@+id/textView6"
+        android:layout_below="@+id/textView6"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="@string/finish_message_hint"
+        android:inputType="textMultiLine" />
 
-        <Button
-            android:id="@+id/finishButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/hintFinishMessageEditText"
-            android:layout_alignRight="@+id/hintFinishMessageEditText"
-            android:layout_below="@+id/hintFinishMessageEditText"
-            android:layout_marginTop="10dp"
-            android:text="@string/finish" />
+    <Button
+        android:id="@+id/finishButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/hintFinishMessageEditText"
+        android:layout_alignRight="@+id/hintFinishMessageEditText"
+        android:layout_below="@+id/hintFinishMessageEditText"
+        android:layout_marginTop="10dp"
+        android:text="@string/finish" />
 
-    </RelativeLayout>
-</ScrollView>
+</RelativeLayout>
