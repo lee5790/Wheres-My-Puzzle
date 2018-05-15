@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -114,9 +115,14 @@ public class CreateHuntFragment extends Fragment implements HintListAdapter.Hint
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(hunt.getHints().size() == 0) {
+                    Toast.makeText(getContext(), R.string.minOneHintMessage, Toast.LENGTH_LONG).show();
+                    return;
+                }
                 saveFields();
                 if(hunt.getKey() == null) {
                     DatabaseReference newHuntRef = huntsRef.push();
+                    hunt.setKey(newHuntRef.getKey());
                     newHuntRef.setValue(hunt);
                 }
                 else {

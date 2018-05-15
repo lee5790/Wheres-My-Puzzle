@@ -45,6 +45,9 @@
     <string name="join_new_hunt_title">Join New Hunt</string>
     <string name="prev">Prev</string>
     <string name="next">Next</string>
+    <string name="minOneHintMessage">You must add at least one hint</string>
+    <string name="join">Join</string>
+    <string name="creator">Creator:</string>
 
 
 </resources>

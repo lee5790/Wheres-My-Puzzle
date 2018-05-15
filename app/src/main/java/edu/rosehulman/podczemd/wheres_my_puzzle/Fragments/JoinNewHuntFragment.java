@@ -1,7 +1,9 @@
 package edu.rosehulman.podczemd.wheres_my_puzzle.Fragments;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +42,7 @@ public class JoinNewHuntFragment extends Fragment implements HuntListAdapter.Hun
     private ArrayList<Hunt> hunts;
     private HuntListAdapter adapter;
     private ViewChanger viewChanger;
+    private DatabaseReference userRef;
 
     private RecyclerView recyclerView;
     private Button prevbutton;
@@ -62,7 +66,7 @@ public class JoinNewHuntFragment extends Fragment implements HuntListAdapter.Hun
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             String uid = getArguments().getString(ARG_USER);
-            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+            userRef = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
             userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -85,7 +89,7 @@ public class JoinNewHuntFragment extends Fragment implements HuntListAdapter.Hun
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_find_new_hunt, container, false);
+        View view = inflater.inflate(R.layout.fragment_join_new_hunt, container, false);
         Button backButton = view.findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,7 +185,28 @@ public class JoinNewHuntFragment extends Fragment implements HuntListAdapter.Hun
     }
 
     @Override
-    public void huntSelected(Hunt hunt) {
-
+    public void huntSelected(final Hunt hunt) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(hunt.getTitle());
+        builder.setMessage(getString(R.string.creator) + " "+ hunt.getCreator() + "\n" + getString(R.string.description) + " " + hunt.getDescription());
+        builder.setPositiveButton(R.string.join, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(!user.isOnHunt(hunt)) {
+                    user.addCurrentHunt(hunt);
+                    userRef.setValue(user);
+                    viewChanger.changeViewAndBack(ActiveHuntFragment.newInstance(user, hunt));
+                }
+                else {
+                    Toast.makeText(getContext(), "You are already on this hunt", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.show();
     }
 }

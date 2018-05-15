@@ -4,6 +4,7 @@ package edu.rosehulman.podczemd.wheres_my_puzzle.Fragments;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 
@@ -54,6 +60,7 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
     private Button previousHintsButton;
     private MapView mapView;
     private GoogleMap map;
+    private DatabaseReference userRef;
 
     private boolean firstUpdate;
     private LatLng currentLatLing;
@@ -84,6 +91,20 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
         if (mapView != null) {
             mapView.onCreate(savedInstanceState);
         }
+        userRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+                user.setUid(dataSnapshot.getKey());
+                user.updateHunt(hunt);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -167,6 +188,8 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     hunt.incCurrentHint();
+                    user.updateHunt(hunt);
+                    userRef.setValue(user);
                     updateHintText();
                 }
             });
@@ -187,7 +210,8 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
             builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
-                    user.getCurrentHunts().remove(hunt);
+                    user.removeCurrentHunt(hunt);
+                    userRef.setValue(user);
                     viewChanger.changeViewAndBack(CurrentHuntsFragment.newInstance(user.getUid()));
                 }
             });
@@ -230,7 +254,7 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
     public void updateLocation(Location location) {
         currentLatLing = new LatLng(location.getLatitude(), location.getLongitude());
         map.clear();
-        map.addCircle(new CircleOptions().center(currentLatLing).radius(3));
+        map.addCircle(new CircleOptions().center(currentLatLing).radius(3).fillColor(Color.BLUE).strokeColor(Color.WHITE).strokeWidth(4));
         if(firstUpdate) {
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLing, 17));
             firstUpdate = false;

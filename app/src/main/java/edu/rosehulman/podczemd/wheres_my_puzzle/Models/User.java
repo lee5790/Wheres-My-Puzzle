@@ -78,6 +78,25 @@ public class User implements Parcelable{
         this.currentHunts.add(currentHunt);
     }
 
+    public boolean isOnHunt(Hunt hunt) {
+        for(Hunt currentHunt: currentHunts) {
+            if(hunt.getKey().equals(currentHunt.getKey())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void updateHunt(Hunt currentHunt) {
+        for (int i = 0; i < currentHunts.size(); i++) {
+            Hunt hunt = currentHunts.get(i);
+            if(currentHunt.getKey().equals(hunt.getKey())) {
+                currentHunts.set(i, currentHunt);
+                return;
+            }
+        }
+    }
+
     public void removeCurrentHunt(Hunt hunt) {
         this.currentHunts.remove(hunt);
     }
