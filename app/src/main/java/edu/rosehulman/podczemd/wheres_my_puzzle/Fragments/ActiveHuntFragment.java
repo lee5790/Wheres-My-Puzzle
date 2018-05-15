@@ -151,7 +151,9 @@ public class ActiveHuntFragment extends Fragment implements LocationObserver, On
         previousHintsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewChanger.changeView(PreviousHintsFragment.newInstance(user,hunt),"Previous Hints");
+                if(hunt.getCurrentHint() != 0) {
+                    viewChanger.changeView(PreviousHintsFragment.newInstance(user, hunt), "Previous Hints");
+                }
             }
         });
         titleText = view.findViewById(R.id.activeHuntTitleTextView);
